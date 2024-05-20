@@ -1,3 +1,5 @@
+create branch MAX
+
 # AtomSkills 2024 (atomskills2024)
 
 Training project
