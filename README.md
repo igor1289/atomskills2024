@@ -4,6 +4,8 @@ some text
 
 new text
 
+27.05.2024 text
+
 # AtomSkills 2024 (atomskills2024)
 
 Training project
