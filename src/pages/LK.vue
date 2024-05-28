@@ -1,6 +1,13 @@
 <template>
-  <q-page class="flex flex-center">
-    <div class="q-pa-md" style="max-width: 400px">
+  <q-page class="row justify-center flex flex-center">
+    <!-- <div class="col" style="max-width: 200px">
+      <q-img src="https://cdn.quasar.dev/img/parallax2.jpg"> </q-img>
+      <q-file v-model="model" label="Ваше фото">
+        <q-icon name="attach_file" />
+      </q-file>
+    </div> -->
+
+    <div class="q-pa-md col-8" style="max-width: 600px">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input
           filled
@@ -34,20 +41,55 @@
           filled
           type="number"
           v-model="age"
-          label="Your age *"
+          label="Возраст *"
           lazy-rules
           :rules="[
-            (val) => (val !== null && val !== '') || 'Please type your age',
-            (val) => (val > 0 && val < 100) || 'Please type a real age',
+            (val) =>
+              (val !== null && val !== '') || 'Пожалуйста, введите возраст',
+            (val) =>
+              (val > 0 && val < 100) || 'Пожалуйста, введите настоящий возраст',
           ]"
         />
+
+        <div class="q-pa-md">
+          <div class="q-gutter-sm">
+            <q-radio v-model="pol" val="Man" label="Мужской" />
+            <q-radio v-model="pol" val="Woman" label="Женский" />
+          </div>
+        </div>
+
+        <q-input v-model="email" filled type="email" hint="Email" />
+        <q-input v-model="tel" filled type="tel" hint="Телефон" />
+
+        <q-input
+          filled
+          v-model="lastName"
+          label="Логин"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'Логин']"
+        />
+
+        <q-input
+          v-model="password"
+          filled
+          :type="isPwd ? 'password' : 'text'"
+          hint="Пароль"
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
 
         <q-toggle v-model="accept" label="I accept the license and terms" />
 
         <div>
-          <q-btn label="Submit" type="submit" color="primary" />
+          <q-btn label="Зарегистрироваться" type="submit" color="primary" />
           <q-btn
-            label="Reset"
+            label="Сбросить"
             type="reset"
             color="primary"
             flat
@@ -73,8 +115,13 @@ export default {
 
     return {
       name,
+      pol: ref("line"),
       age,
       accept,
+      password: ref(""),
+      isPwd: ref(true),
+      email: ref(""),
+      tel: ref(""),
 
       onSubmit() {
         if (accept.value !== true) {
