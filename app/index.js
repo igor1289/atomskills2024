@@ -1,16 +1,17 @@
+//INITIALIZATION
+require("dotenv").config();
 const express = require("express");
 
-require("dotenv").config();
-
-const path = "app/views/";
 const app = express();
 
-app.use(express.static(path));
+//ADDITIONAL SETUP
+app.use(express.json());
 
-app.get("/", function (req, res) {
-  res.sendFile(path + "index.html");
-});
+//USE ROUTERS
+app.use("/user", require("./controllers/user.js"));
 
-app.listen(process.env.PORT, () => {
-  console.log(`server started at port=${process.env.PORT}`);
-});
+//STATIC
+app.use(express.static("./app/views"));
+
+//START
+app.listen(process.env.PORT);
