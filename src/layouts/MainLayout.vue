@@ -19,6 +19,7 @@
         <q-route-tab to="/page2" label="Page Two" />
         <q-route-tab to="/LK" label="Page Three" />
         <q-route-tab to="/LoginForm" label="Войти" />
+        <q-route-tab to="/Start" label="Start" />
       </q-tabs>
     </q-header>
 
