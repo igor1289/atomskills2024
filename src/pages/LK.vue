@@ -1,100 +1,123 @@
 <template>
-  <q-page class="row justify-center flex flex-center">
-    <!-- <div class="col" style="max-width: 200px">
-      <q-img src="https://cdn.quasar.dev/img/parallax2.jpg"> </q-img>
-      <q-file v-model="model" label="Ваше фото">
-        <q-icon name="attach_file" />
-      </q-file>
-    </div> -->
+  <q-page class="flex flex-center">
+    <div style="max-width: 700px">
+      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter">
+        <div class="row example-row-column-width">
+          <div class="col-4 q-pa-md" style="max-width: 500px">
+            <div class="q-pb-md">
+              <q-img src="/public/icons/photoProfile.png"> </q-img>
+              <q-file v-model="model" label="Ваше фото">
+                <q-icon name="attach_file" />
+              </q-file>
+            </div>
 
-    <div class="q-pa-md col-8" style="max-width: 600px">
-      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-        <q-input
-          filled
-          v-model="name"
-          label="Имя"
-          lazy-rules
-          :rules="[
-            (val) => (val && val.length > 0) || 'Пожалуйста, введите имя!',
-          ]"
-        />
-        <q-input
-          filled
-          v-model="lastName"
-          label="Фамилия"
-          lazy-rules
-          :rules="[
-            (val) => (val && val.length > 0) || 'Пожалуйста, введите фамилию!',
-          ]"
-        />
-        <q-input
-          filled
-          v-model="fatherName"
-          label="Отчество"
-          lazy-rules
-          :rules="[
-            (val) => (val && val.length > 0) || 'Пожалуйста, введите отчетсво!',
-          ]"
-        />
+            <q-input
+              filled
+              v-model="lastName"
+              label="Логин"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || 'Придумайте логин']"
+            />
 
-        <q-input
-          filled
-          type="number"
-          v-model="age"
-          label="Возраст *"
-          lazy-rules
-          :rules="[
-            (val) =>
-              (val !== null && val !== '') || 'Пожалуйста, введите возраст!',
-            (val) =>
-              (val > 0 && val < 100) || 'Пожалуйста, введите настоящий возраст!',
-          ]"
-        />
+            <q-input
+              v-model="password"
+              filled
+              :type="isPwd ? 'password' : 'text'"
+              hint="Пароль"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
+          </div>
 
-        <div class="q-pa-md">
-          <div class="q-gutter-sm">
-            <q-radio v-model="pol" val="Man" label="Мужской" />
-            <q-radio v-model="pol" val="Woman" label="Женский" />
+          <div class="col-8 q-pa-md">
+            <q-input
+              filled
+              v-model="name"
+              label="Имя"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Пожалуйста, введите имя!',
+              ]"
+            />
+            <q-input
+              filled
+              v-model="lastName"
+              label="Фамилия"
+              lazy-rules
+              :rules="[
+                (val) =>
+                  (val && val.length > 0) || 'Пожалуйста, введите фамилию!',
+              ]"
+            />
+            <q-input
+              filled
+              v-model="fatherName"
+              label="Отчество"
+              lazy-rules
+              :rules="[
+                (val) =>
+                  (val && val.length > 0) || 'Пожалуйста, введите отчетсво!',
+              ]"
+            />
+
+            <div class="">
+              <div class="q-gutter-sm">
+                <q-radio v-model="pol" val="Man" label="Мужской" />
+                <q-radio v-model="pol" val="Woman" label="Женский" />
+              </div>
+            </div>
+
+            <q-input
+              class="q-pb-md"
+              standout
+              v-model="email"
+              type="email"
+              prefix="Email:"
+              suffix="@gmail.com"
+            >
+              <template v-slot:prepend>
+                <q-icon name="mail" />
+              </template>
+            </q-input>
+
+            <q-input
+              class="q-pb-md"
+              filled
+              v-model="tel"
+              label="Телефон"
+              mask="+7 (###) ###-##-##"
+              fill-mask
+            />
           </div>
         </div>
 
-        <q-input v-model="email" filled type="email" hint="Email" />
-        <q-input v-model="tel" filled type="tel" hint="Телефон" />
-
-        <q-input
-          filled
-          v-model="lastName"
-          label="Логин"
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Логин']"
-        />
-
-        <q-input
-          v-model="password"
-          filled
-          :type="isPwd ? 'password' : 'text'"
-          hint="Пароль"
-        >
-          <template v-slot:append>
-            <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPwd = !isPwd"
-            />
-          </template>
-        </q-input>
-
-        <q-toggle v-model="accept" label="I accept the license and terms" />
-
-        <div>
-          <q-btn label="Зарегистрироваться" type="submit" color="primary" />
-          <q-btn
-            label="Сбросить"
-            type="reset"
-            color="primary"
-            flat
-            class="q-ml-sm"
+        <div class="q-pa-md">
+          <q-toggle
+            class="q-pb-md"
+            v-model="accept"
+            label="Я согласен на обработку персональных данных"
           />
+          <div class="row example-row-column-width">
+            <q-btn
+              class="col"
+              label="Зарегистрироваться"
+              type="submit"
+              color="primary"
+            />
+            <q-btn
+              label="Очистить"
+              type="reset"
+              color="primary"
+              flat
+              class="q-ml-sm col"
+            />
+          </div>
         </div>
       </q-form>
     </div>
