@@ -1,25 +1,29 @@
-const users = [
-  {
-    id: 1,
-    name: "user1",
-    password: "123",
-  },
-  {
-    id: 2,
-    name: "user2",
-    password: "111",
-  },
-];
+const User = require("../models/user.js");
 
-function findUserByName(name) {
-  return users.find((user) => user.name == name);
+async function findByName(name)
+{
+    return await User.findOne({
+        where: {
+            name: name
+        }
+    });
 }
 
-function validatePassword(user, password) {
-  return user.password == password;
+async function findById(id)
+{
+    return await User.findByPk(id);
+}
+
+async function create(data)
+{
+    const newUser = User.build(data);
+    await newUser.setPassword(data.password);
+    await newUser.save();
+    return newUser;
 }
 
 module.exports = {
-  findUserByName: findUserByName,
-  validatePassword: validatePassword,
-};
+    findById,
+    findByName,
+    create
+}

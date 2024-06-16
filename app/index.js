@@ -1,17 +1,29 @@
-//INITIALIZATION
+//Чтение конфигурационного файла
 require("dotenv").config();
+
+const {PORT, HOST} = process.env;
+
+//Подключение к базе данных
+const sequelize = require("./common/sequelize");
+
+//Проверка на необходимость развертывания
+const deploy = require("./services/deploy.js");
+deploy();
+
+
+//Создание экземпляра express
 const express = require("express");
 
 const app = express();
 
-//ADDITIONAL SETUP
+//Дополнительная настройка
 app.use(express.json());
+app.use(express.static("/views"));
 
-//USE ROUTERS
+//Контроллеры
 app.use("/user", require("./controllers/user.js"));
 
-//STATIC
-app.use(express.static("./app/views"));
-
-//START
-app.listen(process.env.PORT);
+//Запуск
+app.listen(PORT, HOST, () => {
+    console.log("Приложение запущено");
+})
