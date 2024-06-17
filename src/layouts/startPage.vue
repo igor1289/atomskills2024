@@ -64,7 +64,7 @@
                 </q-card-section>
 
                 <q-card-actions align="right" class="text-primary">
-                  <q-btn flat label="Войти" @click="onSubmitLog" to="/page1" />
+                  <q-btn flat label="Войти" @click="onLog" to="/recordBook" />
 
                   <q-btn flat label="Закрыть" v-close-popup />
                 </q-card-actions>
@@ -216,7 +216,7 @@
                             label="Зарегистрироваться"
                             type="submit"
                             color="primary"
-                            to="/page1"
+                            to="/recordBook"
                           />
                           <q-btn
                             label="Очистить"
@@ -1470,6 +1470,7 @@ export default {
                   icon: "warning",
                   message: data.message,
                 });
+                console.log("Не удалось подключиться к серверу");
               }
             } catch (error) {
               $q.notify({
@@ -1483,7 +1484,7 @@ export default {
         };
       },
 
-      onSubmitLog() {
+      onLog() {
         async () => {
           try {
             const result = await fetch("/user/login", {
@@ -1502,6 +1503,7 @@ export default {
 
             if (data.access_token) {
               localStorage.setItem("access_token", data.access_token);
+              window.location.href = "/recordBook";
             } else {
               $q.notify({
                 color: "red-5",
