@@ -39,7 +39,7 @@
                 <q-card-section class="q-pt-none">
                   <q-input
                     filled
-                    v-model="lastName"
+                    v-model="login"
                     label="Логин"
                     lazy-rules
                     :rules="[
@@ -64,7 +64,7 @@
                 </q-card-section>
 
                 <q-card-actions align="right" class="text-primary">
-                  <q-btn flat label="Войти" to="/page1" />
+                  <q-btn flat label="Войти" @click="onSubmitLog" to="/page1" />
 
                   <q-btn flat label="Закрыть" v-close-popup />
                 </q-card-actions>
@@ -1431,23 +1431,95 @@ export default {
       })),
 
       onSubmit() {
-        if (accept.value !== true) {
-          $q.notify({
-            color: "red-5",
-            textColor: "white",
-            icon: "warning",
-            message: "You need to accept the license and terms first",
-          });
-        } else {
-          $q.notify({
-            color: "green-4",
-            textColor: "white",
-            icon: "cloud_done",
-            message: "Submitted",
-          });
-        }
+        async () => {
+          if (accept.value !== true) {
+            $q.notify({
+              color: "red-5",
+              textColor: "white",
+              icon: "warning",
+              message: "You need to accept the license and terms first",
+            });
+          } else {
+            try {
+              const result = await fetch("/user/create", {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name: login.value,
+                  password: password.value,
+                }),
+              });
+
+              const data = await result.json();
+
+              if (data.access_token) {
+                localStorage.setItem("access_token", data.access_token);
+                $q.notify({
+                  color: "green-4",
+                  textColor: "white",
+                  icon: "cloud_done",
+                  message: "Submitted",
+                });
+              } else {
+                $q.notify({
+                  color: "red-5",
+                  textColor: "white",
+                  icon: "warning",
+                  message: data.message,
+                });
+              }
+            } catch (error) {
+              $q.notify({
+                color: "red-5",
+                textColor: "white",
+                icon: "warning",
+                message: "Не удалось подключиться к серверу",
+              });
+            }
+          }
+        };
       },
 
+      onSubmitLog() {
+        async () => {
+          try {
+            const result = await fetch("/user/login", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: login.value,
+                password: password.value,
+              }),
+            });
+
+            const data = await result.json();
+
+            if (data.access_token) {
+              localStorage.setItem("access_token", data.access_token);
+            } else {
+              $q.notify({
+                color: "red-5",
+                textColor: "white",
+                icon: "warning",
+                message: data.message,
+              });
+            }
+          } catch (error) {
+            $q.notify({
+              color: "red-5",
+              textColor: "white",
+              icon: "warning",
+              message: "Не удалось подключиться к серверу",
+            });
+          }
+        };
+      },
       onReset() {
         name.value = null;
         tel.value = null;
