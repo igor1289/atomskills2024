@@ -2,7 +2,7 @@ const User = require("../models/user.js")
 const fs = require("fs");
 const path = require("path");
 const sequelize = require("../common/sequelize.js");
-const { loadTopics } = require("./initialLoading.js");
+const initialLoading = require("./initialLoading.js");
 
 async function createDefaultUser()
 {
@@ -25,7 +25,12 @@ async function syncModels()
     const models = fs.readdirSync(path.resolve("app/models"));
 
     models.forEach(modelFile => {
-        const model = require(path.resolve("app/models/" + modelFile));
+        try {
+            const model = require(path.resolve("app/models/" + modelFile));
+        } catch (error) {
+            console.log(`Не удалось синхронизировать ${modelFile}`)
+            console.log(error)
+        }
     });
 }
 
@@ -52,7 +57,7 @@ async function deploy()
     if(usersCount == 0)
         createDefaultUser();
 
-    loadTopics();
+    initialLoading.load();
 }
 
 module.exports = deploy;

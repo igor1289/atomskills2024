@@ -4,12 +4,15 @@ const path = require("path");
 const Trait = require("../models/trait.js");
 const Topic = require("../models/topic.js");
 const Lesson = require("../models/lesson.js");
+const Task = require("../models/task.js");
+const File = require("../models/file.js");
 
 const TraitMap = require("../models/trait_map.js");
 const FileMap = require("../models/file_map.js");
 
 const sequelize = require("../common/sequelize.js");
 const { where } = require("sequelize");
+const fileService = require("./file.js");
 
 
 const lessonsDataPath = path.resolve("app/data/lessons");
@@ -98,6 +101,8 @@ async function loadTopic(topicData)
             loadLesson(lessonData, topicData);
         });
 
+        t.commit();
+
     } catch (error) {
         t.rollback();
     }
@@ -145,14 +150,108 @@ async function loadLesson(lessonData, topicData)
     }else{
         await lesson.update(lessonData)
     }
+
+    const tasks = await loadTasks(lessonData);
+
+    tasks.forEach(async taskData => {
+        await loadTask(taskData, lessonData);
+    });
+
+    lessonData.supplement.forEach(async fileData => {
+        const file = await fileService.createFile({name: fileData.file, title: fileData.title}, {
+            type: "lesson",
+            code: lessonData.code
+        });
+
+        fs.copyFileSync(path.resolve(lessonsDataPath + "/" + lessonData.code + "/" + fileData.file), file.getFullPath());
+    })
+
+    lessonData.traits.forEach(async traitCode => {
+        await TraitMap.findOrCreate({
+            where: {
+                trait_code: traitCode,
+                owner_code: lessonData.code
+            },
+            defaults: {
+                trait_code: traitCode,
+                owner_code: lessonData.code,
+                owner_type: 'lesson'
+            }
+        })
+    });
+}
+
+async function loadTasks(lessonData)
+{
+    const tasks = [];
+    
+    for (const task of lessonData.tasks) {
+        const taskPath = path.resolve(lessonsDataPath + "/" + task);
+        const taskFilePath = path.resolve(taskPath + "/" + task + ".json");
+        
+        try {
+            const taskFileContent = fs.readFileSync(taskFilePath);
+            const taskData = JSON.parse(taskFileContent);
+            tasks.push(taskData);
+            
+        } catch (error) {
+            console.log(`Не удалось прочитать файл ${taskFilePath}`);
+            console.log(error);
+            continue;
+        }
+    }
+    
+    return tasks;
+}
+
+async function loadTask(taskData, lessonData)
+{
+    let task = await Task.findOne({
+        where: {
+            code: taskData.code,
+            lesson_code: lessonData.code
+        }
+    });
+
+    if(!task)
+    {
+        task = Task.build(taskData);
+        task.lesson_code = lessonData.code;
+        task.save();
+    }else{
+        await task.update(taskData)
+    }
+
+    taskData.supplement.forEach(async fileData => {
+        const file = await fileService.createFile({name: fileData.file, title: fileData.title}, {
+            type: "task",
+            code: taskData.code
+        });
+
+        fs.copyFileSync(path.resolve(lessonsDataPath + "/" + taskData.code + "/" + fileData.file), file.getFullPath());
+    })
 }
 
 function load()
 {
-    loadTraits();
-    loadTopics();
+    if(needInitialLoading())
+    {        
+        loadTraits();
+        loadTopics();
+        initialLoadingComplete();
+    }
+}
+
+function needInitialLoading()
+{
+    return !fs.existsSync(path.resolve(dataPath + "/" + "loaded"))
+}
+
+function initialLoadingComplete()
+{
+    fs.writeFileSync(path.resolve(dataPath + "/" + "loaded"), "ok");
 }
 
 module.exports = {
-    loadTopics
+    load
 }

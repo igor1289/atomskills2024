@@ -19,6 +19,9 @@ Defect.init({
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+},
+{
+  sequelize
 });
 
 module.exports = Defect;

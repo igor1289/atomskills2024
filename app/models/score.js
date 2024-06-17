@@ -17,6 +17,9 @@ Score.init({
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+},
+{
+  sequelize
 });
 
 module.exports = Score;

@@ -9,7 +9,10 @@ class Task extends Model
 Task.init({
     code: {
         type: DataTypes.CHAR(32),
-        primaryKey: true,
+        allowNull: false
+    },
+    lesson_code: {
+        type: DataTypes.CHAR(32),
         allowNull: false
     },
     title: {
@@ -28,13 +31,11 @@ Task.init({
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    lesson_code: {
-        type: DataTypes.CHAR(32),
-        allowNull: false
-    }
 },
 {
   sequelize,
 })
+
+Task.removeAttribute("id");
 
 module.exports = Task

@@ -33,6 +33,9 @@ Resalt.init({
     type: DataTypes.CHAR(32),
     allowNull: false,
   },
+},
+{
+  sequelize
 });
 
 module.exports = Resalt;

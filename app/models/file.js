@@ -1,9 +1,23 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../common/sequelize");
+const path = require("path");
+const {v4: uuidv4} = require("uuid");
+
+const storagePath = 'app/storage';
 
 class File extends Model
 {
+    async setStoragePath()
+    {
+        const extname = path.extname(this.name);
+        const uuid = uuidv4();
+        this.path = uuid + extname;
+    }
 
+    getFullPath()
+    {
+        return path.resolve(storagePath + "/" + this.path);
+    }
 }
 
 File.init({
