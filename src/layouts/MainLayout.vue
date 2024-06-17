@@ -5,7 +5,7 @@
         <q-btn flat icon="menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          <q-btn flat to="/startPage" label="Стартовая страница" />
+          <q-btn flat to="/" label="Стартовая страница" />
         </q-toolbar-title>
 
         <q-btn flat icon="menu" @click="toggleRightDrawer" />
@@ -23,6 +23,14 @@
             <q-item-section> Дневник </q-item-section>
           </q-item>
 
+          <q-item clickable v-ripple to="/completedTasks">
+            <q-item-section avatar>
+              <q-icon name="task" />
+            </q-item-section>
+
+            <q-item-section> Проверка заданий </q-item-section>
+          </q-item>
+
           <q-item clickable v-ripple to="/materials">
             <q-item-section avatar>
               <q-icon name="clear_all" />
@@ -33,7 +41,7 @@
 
           <q-item clickable v-ripple to="/tasks">
             <q-item-section avatar>
-              <q-icon name="task" />
+              <q-icon name="clock_loader_40" />
             </q-item-section>
 
             <q-item-section> Задания </q-item-section>
