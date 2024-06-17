@@ -9,7 +9,7 @@
         <q-btn flat @click="drawerLeft = !drawerLeft" icon="menu" />
 
         <q-toolbar-title>
-          <q-btn flat to="/" label="Стартовая страница" />
+          <q-btn flat to="/" label="НАШЕ НАЗВАНИЕ ПРОДУКТА" />
         </q-toolbar-title>
 
         <q-btn
