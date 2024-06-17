@@ -4,7 +4,7 @@
       <div class="q-pa-lg absolute-top text-white">
         <q-toolbar>
           <div class="">
-            <q-btn flat icon="menu" to="/page1" />
+            <q-btn flat icon="menu" to="/recordBook" />
           </div>
 
           <div class="fixed-top-right absolute-top-right">
@@ -162,7 +162,7 @@
                             :rules="[
                               (val) =>
                                 (val && val.length > 0) ||
-                                'Пожалуйста, введите отчетсво!',
+                                'Пожалуйста, введите отчество!',
                             ]"
                           />
 

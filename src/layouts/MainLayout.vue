@@ -1,30 +1,53 @@
 <template>
   <q-layout view="hHr LpR fFr">
-    <q-header elevated class="bg-primary text-white" height-hint="98">
+    <q-header elevated class="bg-primary shadow-2 text-white">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-btn flat icon="menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-          </q-avatar>
-          Title
+          <q-btn flat to="/startPage" label="Стартовая страница" />
         </q-toolbar-title>
 
-        <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
+        <q-btn flat icon="menu" @click="toggleRightDrawer" />
       </q-toolbar>
-
-      <q-tabs align="left">
-        <q-route-tab to="/page1" label="Page One" />
-        <q-route-tab to="/page2" label="Page Two" />
-        <q-route-tab to="/LK" label="Page Three" />
-        <q-route-tab to="/LoginForm" label="Войти" />
-        <q-route-tab to="/startPage" label="Стартовая страница" />
-      </q-tabs>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <!-- drawer content -->
+    <q-drawer show-if-above bordered side="left">
+      <q-scroll-area class="fit">
+        <q-list padding class="menu-list">
+          <q-item clickable v-ripple to="/recordBook">
+            <q-item-section avatar>
+              <q-icon name="book" />
+            </q-item-section>
+
+            <q-item-section> Дневник </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple to="/materials">
+            <q-item-section avatar>
+              <q-icon name="clear_all" />
+            </q-item-section>
+
+            <q-item-section> Учебные материалы </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple to="/tasks">
+            <q-item-section avatar>
+              <q-icon name="task" />
+            </q-item-section>
+
+            <q-item-section> Задания </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple to="/rating">
+            <q-item-section avatar>
+              <q-icon name="star" />
+            </q-item-section>
+
+            <q-item-section> Рейтинг </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-drawer
@@ -34,23 +57,11 @@
       behavior="mobile"
       bordered
     >
-      <!-- drawer content -->
     </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
-
-    <q-footer elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-          </q-avatar>
-          <div>Title</div>
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
   </q-layout>
 </template>
 
@@ -76,3 +87,8 @@ export default {
   },
 };
 </script>
+
+<style lang="sass" scoped>
+.menu-list .q-item
+  border-radius: 0 32px 32px 0
+</style>
