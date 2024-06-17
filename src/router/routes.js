@@ -9,31 +9,31 @@ const routes = [
     children: [
       {
         path: "/recordBook",
-        component: () => import("src/pages/recordBook.vue"),
+        component: () => import("src/pages/q-recordBook.vue"),
       },
       {
         path: "/materials",
-        component: () => import("src/pages/materials.vue"),
+        component: () => import("src/pages/q-materials.vue"),
       },
       {
         path: "/tasks",
-        component: () => import("src/pages/tasks.vue"),
+        component: () => import("src/pages/q-tasks.vue"),
       },
       {
         path: "/completedTasks",
-        component: () => import("src/pages/completedTasks.vue"),
+        component: () => import("src/pages/q-completedTasks.vue"),
       },
       {
         path: "/currentTask",
-        component: () => import("src/pages/currentTask.vue"),
+        component: () => import("src/pages/q-currentTask.vue"),
       },
       {
         path: "/currentMaterials",
-        component: () => import("src/pages/currentMaterials.vue"),
+        component: () => import("src/pages/q-currentMaterials.vue"),
       },
       {
         path: "/rating",
-        component: () => import("src/pages/rating.vue"),
+        component: () => import("src/pages/q-rating.vue"),
       },
       { path: "/LK", component: () => import("src/pages/LK.vue") },
       {

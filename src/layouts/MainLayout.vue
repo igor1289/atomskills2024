@@ -2,17 +2,22 @@
   <q-layout view="hHr LpR fFr">
     <q-header elevated class="bg-primary shadow-2 text-white">
       <q-toolbar>
-        <q-btn flat icon="menu" @click="toggleLeftDrawer" />
+        <q-btn flat @click="drawerLeft = !drawerLeft" icon="menu" />
 
         <q-toolbar-title>
           <q-btn flat to="/" label="Стартовая страница" />
         </q-toolbar-title>
 
-        <q-btn flat icon="menu" @click="toggleRightDrawer" />
+        <q-btn
+          flat
+          @click="drawerRight = !drawerRight"
+          label="Личный кабинет"
+          icon="account_circle"
+        />
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above bordered side="left">
+    <q-drawer v-model="drawerLeft" show-if-above bordered side="left">
       <q-scroll-area class="fit">
         <q-list padding class="menu-list">
           <q-item clickable v-ripple to="/recordBook">
@@ -25,7 +30,7 @@
 
           <q-item clickable v-ripple to="/completedTasks">
             <q-item-section avatar>
-              <q-icon name="task" />
+              <q-icon name="check" />
             </q-item-section>
 
             <q-item-section> Проверка заданий </q-item-section>
@@ -41,7 +46,7 @@
 
           <q-item clickable v-ripple to="/tasks">
             <q-item-section avatar>
-              <q-icon name="clock_loader_40" />
+              <q-icon name="task" />
             </q-item-section>
 
             <q-item-section> Задания </q-item-section>
@@ -59,7 +64,7 @@
     </q-drawer>
 
     <q-drawer
-      v-model="rightDrawerOpen"
+      v-model="drawerRight"
       side="right"
       overlay
       behavior="mobile"
@@ -78,19 +83,9 @@ import { ref } from "vue";
 
 export default {
   setup() {
-    const leftDrawerOpen = ref(false);
-    const rightDrawerOpen = ref(false);
-
     return {
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-
-      rightDrawerOpen,
-      toggleRightDrawer() {
-        rightDrawerOpen.value = !rightDrawerOpen.value;
-      },
+      drawerLeft: ref(false),
+      drawerRight: ref(false),
     };
   },
 };
