@@ -20,7 +20,13 @@ File.init({
     path: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    title: {
+        type: DataTypes.STRING
     }
+},
+{
+  sequelize,
 })
 
 module.exports = File

@@ -19,4 +19,9 @@ TraitMap.init({
         type: DataTypes.CHAR(32),
         allowNull: true
     }
+},
+{
+  sequelize,
 })
+
+module.exports = TraitMap

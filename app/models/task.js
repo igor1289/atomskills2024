@@ -17,7 +17,7 @@ Task.init({
         allowNull: false
     },
     content: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     difficulty: {
@@ -32,6 +32,9 @@ Task.init({
         type: DataTypes.CHAR(32),
         allowNull: false
     }
+},
+{
+  sequelize,
 })
 
 module.exports = Task
