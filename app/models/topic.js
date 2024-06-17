@@ -20,6 +20,9 @@ Topic.init({
         type: DataTypes.STRING,
         allowNull: false
     }
+},
+{
+  sequelize,
 })
 
 module.exports = Topic

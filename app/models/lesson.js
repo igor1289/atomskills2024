@@ -17,7 +17,7 @@ Lesson.init({
         allowNull: false
     },
     content: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     author: {
@@ -28,6 +28,9 @@ Lesson.init({
         type: DataTypes.CHAR(32),
         allowNull: false
     }
+},
+{
+  sequelize,
 })
 
 module.exports = Lesson

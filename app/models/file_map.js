@@ -3,7 +3,7 @@ const sequelize = require("../common/sequelize");
 
 class FileMap extends Model
 {
-    
+
 }
 
 FileMap.init({
@@ -19,4 +19,7 @@ FileMap.init({
         type: DataTypes.CHAR(32),
         allowNull: true
     }
+},
+{
+sequelize,
 })

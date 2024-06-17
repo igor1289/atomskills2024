@@ -4,7 +4,8 @@ const {DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_DIALECT, DEV_MODE} = process.e
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     host: DB_HOST,
-    dialect: DB_DIALECT
+    dialect: DB_DIALECT,
+    logging: false
 })
 
 async function authenticate()
