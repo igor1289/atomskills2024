@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      class="my-sticky-virtscroll-table"
+      class="my-sticky-virtscroll-table shadow-2"
       flat
       bordered
       ref="tableRef"

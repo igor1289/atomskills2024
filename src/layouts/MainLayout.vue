@@ -1,6 +1,10 @@
 <template>
   <q-layout view="hHr LpR fFr">
-    <q-header elevated class="bg-primary shadow-2 text-white">
+    <q-header
+      elevated
+      class="shadow-2 text-white"
+      style="background: linear-gradient(185deg, #04173f 0%, #163c53 100%)"
+    >
       <q-toolbar>
         <q-btn flat @click="drawerLeft = !drawerLeft" icon="menu" />
 
@@ -69,7 +73,23 @@
       overlay
       behavior="mobile"
       bordered
+      show-if-above
+      :width="350"
+      :breakpoint="400"
     >
+      <q-img
+        class="absolute-top"
+        src="/public/icons/fon1.jpg"
+        style="height: 350px"
+      >
+        <div class="absolute-bottom bg-transparent">
+          <q-avatar size="146px" class="q-mb-md">
+            <img src="/public/icons/man.png" />
+          </q-avatar>
+          <div class="text-weight-bold">NAME</div>
+          <div>Ученик</div>
+        </div>
+      </q-img>
     </q-drawer>
 
     <q-page-container>
