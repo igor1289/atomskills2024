@@ -76,7 +76,9 @@
 </template>
 
 <script>
+import { useQuasar } from "quasar";
 import { onMounted, ref } from "vue";
+const $q = useQuasar();
 const columns = [
   {
     name: "title",
@@ -144,6 +146,30 @@ export default {
       listLesson();
     }
 
+    function list_to_tree(list) {
+      var map = {},
+        node,
+        roots = [],
+        i;
+
+      for (i = 0; i < list.length; i += 1) {
+        map[list[i].code] = i;
+        list[i].children = [];
+      }
+      console.log("ghjw");
+      console.log(map);
+
+      for (i = 0; i < list.length; i += 1) {
+        node = list[i];
+        console.log(node);
+        if (node.code) {
+          list[map[node.code]].children.push(node);
+        } else {
+          roots.push(node);
+        }
+      }
+      return roots;
+    }
     async function listLesson() {
       try {
         const result = await fetch("/lesson/all", {
@@ -167,15 +193,17 @@ export default {
 
         if (dataTopic.length != 0) {
           dataTopic.forEach((element) => {
-            console.log(element.code);
-            let filteredByAge = data.filter((element) => {
-              if (element.code == data.topic_code) return element;
+            let filteredByAge = data.filter((e) => {
+              if (element.code == e.topic_code) return e;
             });
             console.log(filteredByAge);
             simple.value.push({
               label: element.title,
               code: element.code,
+              children: null,
             });
+            list_to_tree(simple);
+            console.log(simple);
           });
         }
       } catch (error) {
