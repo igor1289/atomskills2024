@@ -2,16 +2,18 @@ const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../common/sequelize");
 const path = require("path");
 const {v4: uuidv4} = require("uuid");
+const mime = require("mime-types");
 
-const storagePath = 'app/storage';
+const storagePath = process.env.STORAGE;
 
 class File extends Model
 {
-    async setStoragePath()
+    async prepare()
     {
         const extname = path.extname(this.name);
         const uuid = uuidv4();
         this.path = uuid + extname;
+        this.mimeType = mime.contentType(extname);
     }
 
     getFullPath()
@@ -36,6 +38,9 @@ File.init({
         allowNull: false
     },
     title: {
+        type: DataTypes.STRING
+    },
+    mimeType: {
         type: DataTypes.STRING
     }
 },

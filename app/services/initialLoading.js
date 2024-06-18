@@ -27,11 +27,14 @@ function loadTraits()
     try {
         const traits = JSON.parse(traitsFile);
 
-        traits.forEach(trait => {
-            try {                
-                Trait.create(trait);
-            } catch (error) {
-                
+        traits.forEach(async traitData => {
+            let trait = await Trait.findByPk(traitData.code);
+        
+            if(!trait)
+            {
+                Trait.create(traitData);
+            }else{
+                await trait.update(traitData)
             }
         });
 

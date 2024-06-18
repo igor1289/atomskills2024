@@ -8,7 +8,7 @@ async function createFile(fileData, owner)
 {
 
     const file = await File.build(fileData);
-    await file.setStoragePath();
+    await file.prepare();
     await file.save();
 
     const fileMap = await FileMap.create({
@@ -22,6 +22,18 @@ async function createFile(fileData, owner)
     return file;
 }
 
+async function getFile(owner_type, owner_code, name)
+{
+    return file = await File.findOne({
+        where: {
+            owner_type: owner_type,
+            owner_code: owner_code,
+            name: name
+        }
+    });
+}
+
 module.exports = {
-    createFile
+    createFile,
+    getFile
 };
