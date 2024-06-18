@@ -1,0 +1,1 @@
+import{I as s,f as u,P as a,g as i}from"./index.22baba49.js";function m(){let e=null;const o=i();function t(){e!==null&&(clearTimeout(e),e=null)}return s(t),u(t),{removeTimeout:t,registerTimeout(n,r){t(),a(o)===!1&&(e=setTimeout(()=>{e=null,n()},r))}}}var c=(e,o)=>{const t=e.__vccOpts||e;for(const[n,r]of o)t[n]=r;return t};export{c as _,m as u};

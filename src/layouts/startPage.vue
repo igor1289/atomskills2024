@@ -408,7 +408,7 @@ export default {
 
           if (data.access_token) {
             localStorage.setItem("access_token", data.access_token);
-            window.location.href = "/recordBook";
+            window.location.href = "/#/recordBook";
           } else {
             $q.notify({
               color: "red-5",
