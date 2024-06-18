@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-splitter v-model="splitterModel" style="height: 900px">
+    <q-splitter v-model="splitterModel" style="height: 100%">
       <template v-slot:before>
         <div class="q-pa-md">
           <q-input ref="filterRef" filled v-model="filter" label="Поиск">
