@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../common/sequelize");
+const Lesson = require("./lesson");
 
 class Task extends Model
 {
@@ -29,6 +30,10 @@ Task.init({
     },
     time: {
         type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    topic_code: {
+        type: DataTypes.CHAR(32),
         allowNull: false
     },
 },

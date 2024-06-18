@@ -18,8 +18,6 @@ async function get(req, res)
     {
         file = await fileService.getFile(req.params.owner_type, req.params.owner_code, req.params.name);
 
-        console.log(file);
-
         if(file)
         {
             res.sendFile(file.getFullPath());
