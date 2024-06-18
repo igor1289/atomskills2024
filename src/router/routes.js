@@ -28,10 +28,6 @@ const routes = [
         component: () => import("src/pages/q-currentTask.vue"),
       },
       {
-        path: "/currentMaterials",
-        component: () => import("src/pages/q-currentMaterials.vue"),
-      },
-      {
         path: "/rating",
         component: () => import("src/pages/q-rating.vue"),
       },
