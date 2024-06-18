@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 const columns = [
   {
     name: "title",
@@ -138,6 +138,55 @@ export default {
   setup() {
     const filter = ref("");
     const filterRef = ref(null);
+    const simple = ref([]);
+    onMounted();
+    {
+      listLesson();
+    }
+
+    async function listLesson() {
+      try {
+        const result = await fetch("/lesson/all", {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+        const resultTopic = await fetch("/topic/all", {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await result.json();
+        console.log(data);
+        const dataTopic = await resultTopic.json();
+        console.log(dataTopic);
+
+        if (dataTopic.length != 0) {
+          dataTopic.forEach((element) => {
+            console.log(element.code);
+            let filteredByAge = data.filter((element) => {
+              if (element.code == data.topic_code) return element;
+            });
+            console.log(filteredByAge);
+            simple.value.push({
+              label: element.title,
+              code: element.code,
+            });
+          });
+        }
+      } catch (error) {
+        $q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: "Не удалось подключиться к серверу",
+        });
+      }
+    }
     return {
       splitterModel: ref(30),
       selected: ref("Food"),
@@ -148,25 +197,29 @@ export default {
       columnsTasks,
       rowsTasks,
 
-      simple: [
-        {
-          label: "Тема1",
-          children: [
-            {
-              label: "Учебный матреиал 1",
-              icon: "restaurant_menu",
-            },
-            {
-              label: "Учебный матреиал 2",
-              icon: "room_service",
-            },
-            {
-              label: "Учебный матреиал 3",
-              icon: "photo",
-            },
-          ],
-        },
-      ],
+      // simple: [
+      //   {
+      //     label: "Тема1",
+      //     code: "topic1",
+      //     children: [
+      //       {
+      //         label: "Учебный матреиал 1",
+      //         icon: "restaurant_menu",
+      //         code: "ls1",
+      //       },
+      //       {
+      //         label: "Учебный матреиал 2",
+      //         icon: "room_service",
+      //         code: "ls2",
+      //       },
+      //       {
+      //         label: "Учебный матреиал 3",
+      //         icon: "photo",
+      //         code: "ls3",
+      //       },
+      //     ],
+      //   },
+      // ],
       resetFilter() {
         filter.value = "";
         filterRef.value.focus();
