@@ -7,7 +7,9 @@ const {PORT, HOST} = process.env;
 const sequelize = require("./common/sequelize");
 
 //Проверка на необходимость развертывания
-const deploy = require("./services/deploy.js");
+const {deploy, syncModels} = require("./services/deploy.js");
+
+syncModels();
 deploy();
 
 

@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const sequelize = require("../common/sequelize.js");
 const initialLoading = require("./initialLoading.js");
+const Task = require("../models/task.js");
+const Lesson = require("../models/lesson.js");
 
 async function createDefaultUser()
 {
@@ -17,7 +19,34 @@ async function createDefaultUser()
     admin.email = "admin@admin.com";
     admin.tel = "000";
     await admin.save();
-    console.log("Пользователь по умолчанию создан");
+
+
+    const teacher = User.build();
+    teacher.name = "teacher";
+    await teacher.setPassword("teacher");
+    teacher.isAdmin = false;
+    teacher.isTeacher = true;
+    teacher.firstName = "teacher";
+    teacher.lastName = "teacher";
+    teacher.fatherName = "teacher";
+    teacher.email = "teacher@teacher.com";
+    teacher.tel = "000";
+    await teacher.save();
+
+    const student = User.build();
+    student.name = "student";
+    await student.setPassword("student");
+    student.isAdmin = false;
+    student.isTeacher = false;
+    student.firstName = "student";
+    student.lastName = "student";
+    student.fatherName = "student";
+    student.email = "student@student.com";
+    student.tel = "000";
+    await teacher.save();
+
+
+    console.log("Пользователи по умолчанию созданы");
 }
 
 async function syncModels()
@@ -32,6 +61,8 @@ async function syncModels()
             console.log(error)
         }
     });
+
+    sequelize.sync({alter: true})
 }
 
 async function needDeploy()
@@ -46,11 +77,6 @@ async function needDeploy()
 
 async function deploy()
 {
-    await syncModels();
-
-    if(await needDeploy())
-        sequelize.sync({force: true});
-
     //Если таблица пользователей пуста, то создаётся пользователь admin с паролем admin
     const usersCount = await User.count();
 
@@ -60,4 +86,7 @@ async function deploy()
     initialLoading.load();
 }
 
-module.exports = deploy;
+module.exports = {
+    syncModels,
+    deploy
+};

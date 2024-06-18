@@ -1,6 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../common/sequelize");
-const { vModelDynamic } = require("vue");
 
 class FileMap extends Model
 {

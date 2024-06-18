@@ -11,8 +11,9 @@ const TraitMap = require("../models/trait_map.js");
 const FileMap = require("../models/file_map.js");
 
 const sequelize = require("../common/sequelize.js");
-const { where } = require("sequelize");
+const { where, Op } = require("sequelize");
 const fileService = require("./file.js");
+const { equal } = require("assert");
 
 
 const lessonsDataPath = path.resolve("app/data/lessons");
@@ -157,7 +158,7 @@ async function loadLesson(lessonData, topicData)
     const tasks = await loadTasks(lessonData);
 
     tasks.forEach(async taskData => {
-        await loadTask(taskData, lessonData);
+        await loadTask(taskData, lessonData, topicData);
     });
 
     lessonData.supplement.forEach(async fileData => {
@@ -207,12 +208,13 @@ async function loadTasks(lessonData)
     return tasks;
 }
 
-async function loadTask(taskData, lessonData)
+async function loadTask(taskData, lessonData, topicData)
 {
     let task = await Task.findOne({
         where: {
             code: taskData.code,
-            lesson_code: lessonData.code
+            lesson_code: lessonData.code,
+            topic_code: topicData.code
         }
     });
 
@@ -220,6 +222,7 @@ async function loadTask(taskData, lessonData)
     {
         task = Task.build(taskData);
         task.lesson_code = lessonData.code;
+        task.topic_code = topicData.code;
         task.save();
     }else{
         await task.update(taskData)
@@ -239,9 +242,13 @@ function load()
 {
     if(needInitialLoading())
     {        
-        loadTraits();
-        loadTopics();
-        initialLoadingComplete();
+        try {            
+            loadTraits();
+            loadTopics();
+            initialLoadingComplete();
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

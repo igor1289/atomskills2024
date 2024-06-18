@@ -20,15 +20,6 @@ async function authenticate()
     }
 }
 
-async function sync()
-{
-    if(DEV_MODE == "1")
-    {
-        await sequelize.sync({alter: true});
-    }
-}
-
 authenticate();
-sync();
 
 module.exports = sequelize;
