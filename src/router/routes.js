@@ -24,6 +24,10 @@ const routes = [
         component: () => import("src/pages/q-completedTasks.vue"),
       },
       {
+        path: "/completing",
+        component: () => import("src/pages/q-completing.vue"),
+      },
+      {
         path: "/currentTask",
         component: () => import("src/pages/q-currentTask.vue"),
       },

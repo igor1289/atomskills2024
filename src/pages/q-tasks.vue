@@ -2,6 +2,7 @@
   <div class="q-pa-md">
     <q-table
       bordered
+      title="Список задач"
       :rows="rows"
       :columns="columns"
       row-key="name"
@@ -30,49 +31,49 @@ import { onMounted, ref } from "vue";
 const $q = useQuasar();
 const filter = ref("");
 const rows = ref([]);
-onMounted();
-{
-  listTask();
-}
+// onMounted();
+// {
+//   listTask();
+// }
 
-async function listTask() {
-  try {
-    const result = await fetch("/task/all", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await result.json();
-    // console.log(data);
-    // console.log(data.length);
-    if (data.length != 0) {
-      let code = data[0].code;
-      // console.log(code);
-      rows.value.push(data[0]);
-      // console.log(rows);
-      for (const key in data) {
-        if (Object.hasOwnProperty.call(data, key)) {
-          const element = data[key];
-          if (code != element.code) {
-            rows.value.push(element);
-            // console.log(rows);
-            code = element.code;
-          }
-        }
-      }
-    }
-    // rows.value = console.log(rows.value);
-  } catch (error) {
-    $q.notify({
-      color: "red-5",
-      textColor: "white",
-      icon: "warning",
-      message: "Не удалось подключиться к серверу",
-    });
-  }
-}
+// async function listTask() {
+//   try {
+//     const result = await fetch("/task/all", {
+//       method: "GET",
+//       headers: {
+//         Accept: "application/json",
+//         "Content-Type": "application/json",
+//       },
+//     });
+//     const data = await result.json();
+//     // console.log(data);
+//     // console.log(data.length);
+//     if (data.length != 0) {
+//       let code = data[0].code;
+//       // console.log(code);
+//       rows.value.push(data[0]);
+//       // console.log(rows);
+//       for (const key in data) {
+//         if (Object.hasOwnProperty.call(data, key)) {
+//           const element = data[key];
+//           if (code != element.code) {
+//             rows.value.push(element);
+//             // console.log(rows);
+//             code = element.code;
+//           }
+//         }
+//       }
+//     }
+//     // rows.value = console.log(rows.value);
+//   } catch (error) {
+//     $q.notify({
+//       color: "red-5",
+//       textColor: "white",
+//       icon: "warning",
+//       message: "Не удалось подключиться к серверу",
+//     });
+//   }
+// }
 
 const columns = [
   {

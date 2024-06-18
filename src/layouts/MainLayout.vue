@@ -32,6 +32,16 @@
             <q-item-section> Дневник </q-item-section>
           </q-item>
 
+          <!-- ВРЕМЕННО  -->
+          <q-item clickable v-ripple to="/completing">
+            <q-item-section avatar>
+              <q-icon name="check" />
+            </q-item-section>
+
+            <q-item-section> Выполнение Задания </q-item-section>
+          </q-item>
+          <!-- ВРЕМЕННО  -->
+
           <q-item clickable v-ripple to="/completedTasks">
             <q-item-section avatar>
               <q-icon name="check" />
