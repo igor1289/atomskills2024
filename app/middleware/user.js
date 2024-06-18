@@ -1,16 +1,25 @@
 const { body } = require("express-validator");
 
 const create = [
-        body(["password", "name"]).trim().isString().notEmpty(),
-        // body('isAdmin').default(false),
-        // body('isTeacher').default(false),
-    ];
+  body([
+    "password",
+    "name",
+    "firstName",
+    "lastName",
+    "fatherName",
+    "email",
+    "tel",
+  ])
+    .trim()
+    .isString()
+    .notEmpty(),
+  body("isAdmin").default(false),
+  body("isTeacher").default(false),
+];
 
-const login = [
-    body(['name', "password"]).trim().isString().notEmpty()
-]
+const login = [body(["name", "password"]).trim().isString().notEmpty()];
 
 module.exports = {
-    create: create,
-    login: login
-}
+  create: create,
+  login: login,
+};

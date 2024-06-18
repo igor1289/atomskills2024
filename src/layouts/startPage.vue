@@ -338,64 +338,17 @@ export default {
         },
       })),
 
-      onSubmit() {
-        async () => {
-          if (accept.value !== true) {
-            $q.notify({
-              color: "red-5",
-              textColor: "white",
-              icon: "warning",
-              message: "You need to accept the license and terms first",
-            });
-          } else {
-            try {
-              const result = await fetch("/user/create", {
-                method: "POST",
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  name: login.value,
-                  password: password.value,
-                }),
-              });
-
-              const data = await result.json();
-
-              if (data.access_token) {
-                localStorage.setItem("access_token", data.access_token);
-                $q.notify({
-                  color: "green-4",
-                  textColor: "white",
-                  icon: "cloud_done",
-                  message: "Submitted",
-                });
-              } else {
-                $q.notify({
-                  color: "red-5",
-                  textColor: "white",
-                  icon: "warning",
-                  message: data.message,
-                });
-                console.log("Не удалось подключиться к серверу");
-              }
-            } catch (error) {
-              $q.notify({
-                color: "red-5",
-                textColor: "white",
-                icon: "warning",
-                message: "Не удалось подключиться к серверу",
-              });
-            }
-          }
-        };
-      },
-
-      onLog() {
-        async () => {
+      async onSubmit() {
+        if (accept.value !== true) {
+          $q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: "You need to accept the license and terms first",
+          });
+        } else {
           try {
-            const result = await fetch("/user/login", {
+            const result = await fetch("/user/create", {
               method: "POST",
               headers: {
                 Accept: "application/json",
@@ -411,7 +364,12 @@ export default {
 
             if (data.access_token) {
               localStorage.setItem("access_token", data.access_token);
-              window.location.href = "/recordBook";
+              $q.notify({
+                color: "green-4",
+                textColor: "white",
+                icon: "cloud_done",
+                message: "Submitted",
+              });
             } else {
               $q.notify({
                 color: "red-5",
@@ -419,6 +377,7 @@ export default {
                 icon: "warning",
                 message: data.message,
               });
+              console.log("Не удалось подключиться к серверу");
             }
           } catch (error) {
             $q.notify({
@@ -428,7 +387,44 @@ export default {
               message: "Не удалось подключиться к серверу",
             });
           }
-        };
+        }
+      },
+
+      async onLog() {
+        try {
+          const result = await fetch("/user/login", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: login.value,
+              password: password.value,
+            }),
+          });
+
+          const data = await result.json();
+
+          if (data.access_token) {
+            localStorage.setItem("access_token", data.access_token);
+            window.location.href = "/recordBook";
+          } else {
+            $q.notify({
+              color: "red-5",
+              textColor: "white",
+              icon: "warning",
+              message: data.message,
+            });
+          }
+        } catch (error) {
+          $q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: "Не удалось подключиться к серверу",
+          });
+        }
       },
       onReset() {
         name.value = null;
