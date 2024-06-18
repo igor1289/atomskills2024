@@ -23,6 +23,8 @@ app.use("/public", express.static("./public/"));
 
 //Контроллеры
 app.use("/user", require("./controllers/user.js"));
+app.use("/file", require("./controllers/file.js"));
+app.use("/task", require("./controllers/task.js"));
 
 //Запуск
 app.listen(PORT, HOST, () => {

@@ -13,6 +13,7 @@ async function createFile(fileData, owner)
 
     const fileMap = await FileMap.create({
         file_id: file.id,
+        file_name: file.name,
         owner_type: owner.type,
         owner_code: owner.code
     });
@@ -24,13 +25,16 @@ async function createFile(fileData, owner)
 
 async function getFile(owner_type, owner_code, name)
 {
-    return file = await File.findOne({
+    const fileMap = await FileMap.findOne({
         where: {
             owner_type: owner_type,
             owner_code: owner_code,
-            name: name
+            file_name: name,
         }
     });
+
+    if(fileMap)
+        return await File.findByPk(fileMap.file_id);
 }
 
 module.exports = {

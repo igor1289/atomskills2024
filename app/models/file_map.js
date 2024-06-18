@@ -12,6 +12,10 @@ FileMap.init({
         type: DataTypes.INTEGER,
         allowNull: true
     },
+    file_name: {
+        type: DataTypes.STRING(256),
+        allowNull: true
+    },
     owner_code: {
         type: DataTypes.CHAR(32),
         allowNull: true
