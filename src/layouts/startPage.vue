@@ -64,7 +64,7 @@
                 </q-card-section>
 
                 <q-card-actions align="right" class="text-primary">
-                  <q-btn flat label="Войти" @click="onLog" to="/recordBook" />
+                  <q-btn flat label="Войти" @click="onLog" />
 
                   <q-btn flat label="Закрыть" v-close-popup />
                 </q-card-actions>
@@ -216,7 +216,6 @@
                             label="Зарегистрироваться"
                             type="submit"
                             color="primary"
-                            to="/recordBook"
                           />
                           <q-btn
                             label="Очистить"
@@ -357,18 +356,25 @@ export default {
               body: JSON.stringify({
                 name: login.value,
                 password: password.value,
+                lastName: lastName.value,
+                firstName: name.value,
+                fatherName: fatherName.value,
+                email: email.value,
+                tel: tel.value,
+                isAdmin: false,
+                isTeacher: false,
               }),
             });
 
             const data = await result.json();
 
-            if (data.access_token) {
-              localStorage.setItem("access_token", data.access_token);
+            if (!data.isError) {
               $q.notify({
                 color: "green-4",
                 textColor: "white",
                 icon: "cloud_done",
-                message: "Submitted",
+                message:
+                  "Вы зарегистрированы. Войдите под своим логином и паролем.",
               });
             } else {
               $q.notify({
@@ -384,7 +390,7 @@ export default {
               color: "red-5",
               textColor: "white",
               icon: "warning",
-              message: "Не удалось подключиться к серверу",
+              message: data.message,
             });
           }
         }
