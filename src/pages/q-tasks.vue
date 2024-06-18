@@ -1,15 +1,11 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      grid
-      grid-header
-      flat
       bordered
       :rows="rows"
       :columns="columns"
       row-key="name"
       :filter="filter"
-      hide-header
     >
       <template v-slot:top-right>
         <q-input
@@ -28,8 +24,55 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { useQuasar } from "quasar";
+import { onMounted, ref } from "vue";
+const $q = useQuasar();
+const filter = ref("");
+const rows = ref([]);
+onMounted();
+{
+  listTask();
+}
+
+async function listTask() {
+  try {
+    const result = await fetch("/task/all", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await result.json();
+    // console.log(data);
+    // console.log(data.length);
+    if (data.length != 0) {
+      let code = data[0].code;
+      // console.log(code);
+      rows.value.push(data[0]);
+      // console.log(rows);
+      for (const key in data) {
+        if (Object.hasOwnProperty.call(data, key)) {
+          const element = data[key];
+          if (code != element.code) {
+            rows.value.push(element);
+            // console.log(rows);
+            code = element.code;
+          }
+        }
+      }
+    }
+    // rows.value = console.log(rows.value);
+  } catch (error) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "Не удалось подключиться к серверу",
+    });
+  }
+}
 
 const columns = [
   {
@@ -37,7 +80,7 @@ const columns = [
     required: true,
     label: "Заголовок",
     align: "left",
-    field: (row) => row.name,
+    field: (row) => row.title,
     sortable: true,
   },
   {
@@ -54,137 +97,4 @@ const columns = [
     sortable: true,
   },
 ];
-
-const rows = [
-  {
-    name: "Задание1",
-    difficulty: 1,
-    time: 60,
-  },
-  {
-    name: "Задание2",
-    difficulty: 2,
-    time: 50,
-  },
-  {
-    name: "Задание3",
-    difficulty: 1,
-    time: 80,
-  },
-  {
-    name: "Задание4",
-    difficulty: 3,
-    time: 20,
-  },
-  {
-    name: "Задание5",
-    difficulty: 3,
-    time: 10,
-  },
-  {
-    name: "Задание6",
-    difficulty: 1,
-    time: 70,
-  },
-  {
-    name: "Задание1",
-    difficulty: 1,
-    time: 60,
-  },
-  {
-    name: "Задание2",
-    difficulty: 2,
-    time: 50,
-  },
-  {
-    name: "Задание3",
-    difficulty: 1,
-    time: 80,
-  },
-  {
-    name: "Задание4",
-    difficulty: 3,
-    time: 20,
-  },
-  {
-    name: "Задание5",
-    difficulty: 3,
-    time: 10,
-  },
-  {
-    name: "Задание6",
-    difficulty: 1,
-    time: 70,
-  },
-  {
-    name: "Задание1",
-    difficulty: 1,
-    time: 60,
-  },
-  {
-    name: "Задание2",
-    difficulty: 2,
-    time: 50,
-  },
-  {
-    name: "Задание3",
-    difficulty: 1,
-    time: 80,
-  },
-  {
-    name: "Задание4",
-    difficulty: 3,
-    time: 20,
-  },
-  {
-    name: "Задание5",
-    difficulty: 3,
-    time: 10,
-  },
-  {
-    name: "Задание6",
-    difficulty: 1,
-    time: 70,
-  },
-  {
-    name: "Задание1",
-    difficulty: 1,
-    time: 60,
-  },
-  {
-    name: "Задание2",
-    difficulty: 2,
-    time: 50,
-  },
-  {
-    name: "Задание3",
-    difficulty: 1,
-    time: 80,
-  },
-  {
-    name: "Задание4",
-    difficulty: 3,
-    time: 20,
-  },
-  {
-    name: "Задание5",
-    difficulty: 3,
-    time: 10,
-  },
-  {
-    name: "Задание6",
-    difficulty: 1,
-    time: 70,
-  },
-];
-
-export default {
-  setup() {
-    return {
-      filter: ref(""),
-      columns,
-      rows,
-    };
-  },
-};
 </script>
