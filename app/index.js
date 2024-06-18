@@ -19,6 +19,7 @@ const app = express();
 //Дополнительная настройка
 app.use(express.json());
 app.use(express.static("./app/views"));
+app.use("/public", express.static("./public/"));
 
 //Контроллеры
 app.use("/user", require("./controllers/user.js"));
