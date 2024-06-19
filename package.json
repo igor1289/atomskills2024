@@ -21,6 +21,7 @@
     "express": "^4.19.2",
     "express-validator": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "jspdf": "^2.5.1",
     "markdown-it": "^14.1.0",
     "markdown-it-replace-link": "^1.2.1",
     "mime-types": "^2.1.35",

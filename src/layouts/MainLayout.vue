@@ -9,7 +9,7 @@
         <q-btn flat @click="drawerLeft = !drawerLeft" icon="menu" />
 
         <q-toolbar-title>
-          <q-btn flat to="/" label="НАШЕ НАЗВАНИЕ ПРОДУКТА" />
+          <q-btn flat to="/" label="SPARK.EDU" />
         </q-toolbar-title>
 
         <q-btn
@@ -101,16 +101,21 @@
             <img src="/public/icons/man.png" />
           </q-avatar>
           <div>
-            <div class="text-h8 text-left">Фамилия</div>
-            <div class="text-h8 text-left">Имя</div>
-            <div class="text-h8 text-left">Отчество</div>
+            <div class="text-h8 text-left">{{ f }}</div>
+            <div class="text-h8 text-left">{{ i }}</div>
+            <div class="text-h8 text-left">{{ o }}</div>
           </div>
         </div>
       </q-img>
       <div class="absolute-center">
         <div class="text-h5 text-center text-primary">Диплом</div>
         <div class="q-pb-md">
-          <q-btn icon="download" color="primary" label="Загрузить" />
+          <q-btn
+            icon="download"
+            @click="download"
+            color="primary"
+            label="Загрузить"
+          />
         </div>
       </div>
     </q-drawer>
@@ -122,13 +127,42 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import jsPDF from "jspdf";
+
+const f = ref("");
+const i = ref("");
+const o = ref("");
+
+onMounted();
+{
+  const user_name = localStorage.getItem("user_name");
+  const fio = user_name.split(" ");
+
+  f.value = fio[0];
+  i.value = fio[1];
+  o.value = fio[2];
+}
 
 export default {
   setup() {
     return {
+      f,
+      i,
+      o,
       drawerLeft: ref(false),
       drawerRight: ref(false),
+      download() {
+        const doc = new jsPDF();
+
+        doc.text(
+          `Diplom was isuued by ${f.value}  ${i.value} ${o.value} .`,
+          10,
+          10
+        );
+
+        doc.save("Diplom.pdf");
+      },
     };
   },
 };
