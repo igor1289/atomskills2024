@@ -6,4 +6,5 @@
 .eslintrc.cjs
 /quasar.config.*.temporary.compiled*
 
+
 /app/views
