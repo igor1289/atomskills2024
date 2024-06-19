@@ -1,27 +1,73 @@
 <template>
-  <div class="q-pa-md">
-    <q-table
-      bordered
-      title="Темы"
-      :rows="rows"
-      :columns="columns"
-      row-key="name"
-      :filter="filter"
-    >
-      <template v-slot:top-right>
-        <q-input
-          borderless
-          dense
-          debounce="300"
-          v-model="filter"
-          placeholder="Поиск"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+  <div>
+    <q-splitter v-model="splitterModel" style="height: 400px">
+      <template v-slot:before>
+        <div class="q-pa-md">
+          <div class="text-h4 q-mb-md">Темы</div>
+          <div class="q-pa-md">
+            <q-table
+              bordered
+              :rows="rows"
+              :columns="columns"
+              row-key="name"
+              :filter="filter"
+            >
+              <template v-slot:top-right>
+                <q-input
+                  borderless
+                  dense
+                  debounce="300"
+                  v-model="filter"
+                  placeholder="Поиск"
+                >
+                  <template v-slot:append>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </template>
+            </q-table>
+          </div>
+        </div>
       </template>
-    </q-table>
+
+      <template v-slot:separator>
+        <q-avatar
+          color="primary"
+          text-color="white"
+          size="40px"
+          icon="drag_indicator"
+        />
+      </template>
+
+      <template v-slot:after>
+        <div class="q-pa-md">
+          <div class="text-h4 q-mb-md">Учебные материалы</div>
+          <div class="q-pa-md">
+            <q-table
+              bordered
+              :rows="rowsMat"
+              :columns="columnsMat"
+              row-key="name"
+              :filter="filter"
+            >
+              <template v-slot:top-right>
+                <q-input
+                  borderless
+                  dense
+                  debounce="300"
+                  v-model="filter"
+                  placeholder="Поиск"
+                >
+                  <template v-slot:append>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </template>
+            </q-table>
+          </div>
+        </div>
+      </template>
+    </q-splitter>
   </div>
 </template>
 
@@ -31,6 +77,9 @@ import { onMounted, ref } from "vue";
 const $q = useQuasar();
 const filter = ref("");
 const rows = ref([]);
+const rowsMat = ref([]);
+const splitterModel = 50;
+
 // onMounted();
 // {
 //   listTask();
@@ -77,6 +126,13 @@ const rows = ref([]);
 
 const columns = [
   {
+    name: "code",
+    align: "left",
+    label: "Код",
+    field: "code",
+    sortable: true,
+  },
+  {
     name: "title",
     required: true,
     label: "Заголовок",
@@ -85,16 +141,36 @@ const columns = [
     sortable: true,
   },
   {
-    name: "difficulty",
-    align: "center",
-    label: "Сложность",
-    field: "difficulty",
+    name: "description",
+    required: true,
+    label: "Описание",
+    align: "left",
+    field: (row) => row.title,
+    sortable: true,
+  },
+];
+const columnsMat = [
+  {
+    name: "code",
+    align: "left",
+    label: "Код",
+    field: "code",
     sortable: true,
   },
   {
-    name: "time",
-    label: "Время выполнения (мин)",
-    field: "time",
+    name: "title",
+    required: true,
+    label: "Заголовок",
+    align: "left",
+    field: (row) => row.title,
+    sortable: true,
+  },
+  {
+    name: "autor",
+    required: true,
+    label: "Автор",
+    align: "left",
+    field: (row) => row.title,
     sortable: true,
   },
 ];
