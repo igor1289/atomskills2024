@@ -44,10 +44,7 @@
         <div class="text-h6 q-ma-lg text-center">Описание задания</div>
 
         <div class="q-px-md text-justify">
-          ОПИСАНИЕ Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          Quis praesentium cumque magnam odio iure quidem, quod illum numquam
-          possimus obcaecati commodi minima assumenda consectetur culpa fuga
-          nulla ullam. In, libero.
+          <div class="q-m-md" v-html="content"></div>
         </div>
       </template>
 
@@ -87,6 +84,8 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import markdownit from "markdown-it";
+import linkReplace from "markdown-it-replace-link";
 const columns = [
   {
     name: "title",
@@ -151,6 +150,7 @@ const progress = ref(false);
 const code = ref("");
 const data = ref([]);
 const dataTask = ref([]);
+const content = ref("");
 
 onMounted();
 {
@@ -159,6 +159,7 @@ onMounted();
 
 async function listLesson() {
   const code = localStorage.getItem("current_lesson_result");
+  const task_code = localStorage.getItem("current_lesson");
   try {
     // console.log("/result/one/" + code);
     const result = await fetch("/result/one/" + code, {
@@ -178,6 +179,19 @@ async function listLesson() {
         },
       });
       dataTask.value = await resultTask.json();
+      const md = markdownit();
+      md.use(linkReplace, {
+        processHTML: true,
+        replaceLink: (link, env, token, htmlToken) => {
+          return "/file/get/task/" + task_code.trim() + "/" + link;
+          console.log(link);
+          //localhost:9000/file/get/lesson/lsn0001/img_lsn0001_1_1.jpg
+        },
+      });
+
+      content.value = md.render(
+        dataTask.value.content.replaceAll("<br>", "\n")
+      );
       console.log(dataTask.value);
     } else {
       $q.notify({
