@@ -1,9 +1,9 @@
 <template>
   <div>
-    <q-splitter v-model="splitterModel" style="height: 400px">
+    <q-splitter v-model="splitterModel">
       <template v-slot:before>
         <div class="q-pa-md">
-          <div class="text-h4 q-mb-md">Темы</div>
+          <div class="text-h5 q-ma-md text-center">Темы</div>
           <div class="q-pa-md">
             <q-table
               bordered
@@ -42,7 +42,7 @@
 
       <template v-slot:after>
         <div class="q-pa-md">
-          <div class="text-h4 q-mb-md">Учебные материалы</div>
+          <div class="text-h5 q-ma-md text-center">Учебные материалы</div>
           <div class="q-pa-md">
             <q-table
               bordered

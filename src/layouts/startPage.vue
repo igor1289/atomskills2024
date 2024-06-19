@@ -3,9 +3,9 @@
     <q-parallax src="/public/icons/fon1.jpg" :height="500">
       <div class="q-pa-lg absolute-top text-white">
         <q-toolbar>
-          <div class="">
+          <!-- <div class="">
             <q-btn flat icon="menu" to="/recordBook" />
-          </div>
+          </div> -->
 
           <div class="fixed-top-right absolute-top-right">
             <q-btn
@@ -251,43 +251,47 @@
       </div>
     </q-parallax>
   </div>
-
-  <div class="">
-    <div class="text-center">
-      <h1>TEST</h1>
-      <h2>Testtesttest</h2>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio eum quo
-        labore laborum natus est, laboriosam nesciunt praesentium ducimus saepe
-        possimus consequuntur sunt esse odit ratione ad. Suscipit, excepturi
-        quis!
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio eum quo
-        labore laborum natus est, laboriosam nesciunt praesentium ducimus saepe
-        possimus consequuntur sunt esse odit ratione ad. Suscipit, excepturi
-        quis!
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio eum quo
-        labore laborum natus est, laboriosam nesciunt praesentium ducimus saepe
-        possimus consequuntur sunt esse odit ratione ad. Suscipit, excepturi
-        quis!
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio eum quo
-        labore laborum natus est, laboriosam nesciunt praesentium ducimus saepe
-        possimus consequuntur sunt esse odit ratione ad. Suscipit, excepturi
-        quis!
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio eum quo
-        labore laborum natus est, laboriosam nesciunt praesentium ducimus saepe
-        possimus consequuntur sunt esse odit ratione ad. Suscipit, excepturi
-        quis!
-      </p>
-    </div>
-  </div>
+  <q-tab-panel class="row justify-center">
+    <div style="max-width: 1500px">
+      <div class="q-pa-md text-h6 text-italic text-justify">
+        Компания специализируется на обучении и развитии своих клиентов. Мы
+        организуем курсы, семинары и тренинги по самым разнообразным темам - от
+        личностного роста и развития навыков коммуникации до управления
+        проектами и технологическими инновациями. Наши специалисты - опытные и
+        высококвалифицированные преподаватели, которые помогут вам стать лучше в
+        том, что вам действительно важно. Мы стремимся к тому, чтобы каждый наш
+        клиент добился успеха в своей области, исполнил свои самые заветные
+        мечты и стал настоящим профессионалом.
+      </div>
+      <div class="q-pa-md text-h6 text-italic text-justify">
+        Наша цель - помочь нашим клиентам раскрыть свой потенциал и достигнуть
+        новых высот в своей карьере и личной жизни. Мы верим, что обучение и
+        развитие являются ключевыми компонентами успеха в современном мире,
+        поэтому мы постоянно обновляем наш ассортимент курсов и тренингов, чтобы
+        предлагать самые актуальные и востребованные программы
+      </div>
+      <div class="q-pa-md text-h6 text-italic text-justify">
+        Наши специалисты тщательно разрабатывают каждый курс, учитывая
+        потребности и запросы наших клиентов. Мы стремимся создать комфортную и
+        поддерживающую обучающую атмосферу, где каждый участник может раскрыть
+        свой потенциал и получить необходимые знания и навыки для достижения
+        своих целей.
+      </div>
+      <div class="q-pa-md text-h6 text-italic text-justify">
+        Мы также предлагаем индивидуальные консультации и коучинг, чтобы помочь
+        нашим клиентам в решении конкретных проблем и преодолении сложностей на
+        их пути к успеху. Мы гордимся своими результатами и успехами наших
+        клиентов, и верим, что каждый человек способен изменить свою жизнь к
+        лучшему при наличии правильной поддержки и направления.
+      </div>
+      <div class="q-pa-md text-h6 text-italic text-justify">
+        Присоединяйтесь к нам и начните свой путь к лучшей версии себя! Мы с
+        удовольствием поможем вам преодолеть препятствия, раскрыть свой
+        потенциал и достичь новых высот в различных областях вашей жизни. Вместе
+        мы создадим будущее, на которое вы заслуживаете.
+      </div>
+    </div></q-tab-panel
+  >
 </template>
 
 <script>
@@ -414,6 +418,8 @@ export default {
 
           if (data.access_token) {
             localStorage.setItem("access_token", data.access_token);
+            localStorage.setItem("user_id", data.user_id);
+            localStorage.setItem("user_name", data.user_name);
             window.location.href = "/#/recordBook";
           } else {
             $q.notify({

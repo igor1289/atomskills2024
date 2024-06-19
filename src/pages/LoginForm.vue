@@ -40,6 +40,8 @@ const name = ref("");
 const pwd = ref("");
 
 const onSubmit = async () => {
+  console.log(123123123);
+
   try {
     const result = await fetch("/user/login", {
       method: "POST",
@@ -52,8 +54,13 @@ const onSubmit = async () => {
 
     const data = await result.json();
 
+    console.log(data);
+
     if (data.access_token) {
       localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("user_id", data.user_id);
+      localStorage.setItem("user_name", data.user_name);
+
     } else {
       $q.notify({
         color: "red-5",
