@@ -59,7 +59,9 @@ async function getTaskList() {
 }
 
 async function findTask(e, row) {
+  console.log("row - ", row);
   localStorage.setItem("current_lesson_result", row.id);
+  localStorage.setItem("current_lesson", row.task_code);
   window.location.href = "/#/completing";
   // try {
   //   const result = await fetch("/result/one/" + row.id, {

@@ -32,7 +32,7 @@ Result.init({
   status_id: {
     type: DataTypes.CHAR(32),
     allowNull: false,
-  },
+  }
 },
 {
   sequelize

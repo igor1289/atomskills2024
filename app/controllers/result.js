@@ -15,6 +15,7 @@ async function getAll(req, res) {
 
     resultsTable.push({
       task: task.title,
+      task_code: task.code,
       id: result.id,
       student: student.getFullName(),
       teacher: teacher.getFullName(),
