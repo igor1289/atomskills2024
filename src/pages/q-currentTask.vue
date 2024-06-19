@@ -10,18 +10,17 @@
       />
     </div>
 
-    <div class="text-h4 q-mb-md text-center">Задание 1</div>
+    <div class="text-h4 q-mb-md text-center">{{ data.title }}</div>
     <div class="text-h6 text-italic text-right">
-      Всего времени на задание : 15 минут
+      Всего времени на задание : {{ data.time }} минут
     </div>
-    <div class="text-h6 text-italic text-right q-pb-md">Сложность : 2</div>
+    <div class="text-h6 text-italic text-right q-pb-md">
+      Сложность : {{ data.difficulty }}
+    </div>
     <div class="q-mb-md text-justify">
-      ОПИСАНИЕ Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis
-      praesentium cumque magnam odio iure quidem, quod illum numquam possimus
-      obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In,
-      libero.
+      {{ data.content }}
     </div>
-    <div>
+    <!-- <div>
       <q-table
         class="my-sticky-header-column-table"
         bordered
@@ -38,11 +37,11 @@
           </q-td>
         </template>
       </q-table>
-    </div>
+    </div> -->
   </q-tab-panel>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from "vue";
 const columns = [
   {
@@ -62,89 +61,58 @@ const columns = [
 ];
 const rows = [];
 
-export default {
-  setup() {
-    const filter = ref("");
-    const filterRef = ref(null);
-    const loading = ref([false, false, false, false, false, false]);
+const filter = ref("");
+const filterRef = ref(null);
+const loading = ref([false, false, false, false, false, false]);
+const code = ref("");
+const data = ref([]);
 
-    const progress = ref(false);
+const progress = ref(false);
+onMounted();
+{
+  listLesson();
+}
 
-    function simulateProgress(number) {
-      // we set loading state
-      loading.value[number] = true;
+function simulateProgress(number) {
+  // we set loading state
+  loading.value[number] = true;
 
-      // simulate a delay
-      setTimeout(() => {
-        // we're done, we reset loading state
-        loading.value[number] = false;
-      }, 3000);
-    }
-    // const simple = ref([]);
-    // onMounted();
-    // {
-    //   listLesson();
-    // }
+  // simulate a delay
+  setTimeout(() => {
+    // we're done, we reset loading state
+    loading.value[number] = false;
+  }, 3000);
+}
+// const simple = ref([]);
 
-    // async function listLesson() {
-    //   try {
-    //     const result = await fetch("/lesson/all", {
-    //       method: "GET",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //       },
-    //     });
-    //     const resultTopic = await fetch("/topic/all", {
-    //       method: "GET",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //       },
-    //     });
-    //     const data = await result.json();
-    //     console.log(data);
-    //     const dataTopic = await resultTopic.json();
-    //     console.log(dataTopic);
-
-    //     if (dataTopic.length != 0) {
-    //       dataTopic.forEach((element) => {
-    //         console.log(element.code);
-    //         let filteredByAge = data.filter((element) => {
-    //           if (element.code == data.topic_code) return element;
-    //         });
-    //         console.log(filteredByAge);
-    //         simple.value.push({
-    //           label: element.title,
-    //           code: element.code,
-    //         });
-    //       });
-    //     }
-    //   } catch (error) {
-    //     $q.notify({
-    //       color: "red-5",
-    //       textColor: "white",
-    //       icon: "warning",
-    //       message: "Не удалось подключиться к серверу",
-    //     });
-    //   }
-    // }
-    return {
-      splitterModel: ref(30),
-      selected: ref("Food"),
-      filter,
-      filterRef,
-      columns,
-      rows,
-      loading,
-      progress,
-      simulateProgress,
-
-      resetFilter() {
-        filter.value = "";
-        filterRef.value.focus();
+async function listLesson() {
+  const code = localStorage.getItem("current_lesson");
+  try {
+    console.log("/task/pk/" + code);
+    const result = await fetch("/task/pk/" + code, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    };
-  },
-};
+    });
+    data.value = await result.json();
+    console.log(data);
+  } catch (error) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "Не удалось подключиться к серверу",
+    });
+  }
+}
+
+async function resetFilter() {
+  filter.value = "";
+  filterRef.value.focus();
+}
+
+const splitterModel = ref(30);
+const selected = ref("Food");
 </script>

@@ -7,6 +7,7 @@
       :columns="columns"
       row-key="name"
       :filter="filter"
+      @row-click="findTask"
     >
       <template v-slot:top-right>
         <q-input
@@ -64,8 +65,32 @@ async function listTask() {
         }
       }
     }
-    // rows.value = console.log(rows.value);
   } catch (error) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "Не удалось подключиться к серверу",
+    });
+  }
+}
+
+async function findTask(e, row) {
+  try {
+    console.log("/task/pk/" + row.code.trim());
+    const result = await fetch("/task/pk/" + row.code, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await result.json();
+    console.log(data);
+    localStorage.setItem("current_lesson", data.code);
+    window.location.href = "/#/currentTask";
+  } catch (error) {
+    console.log("/task/pk/" + row.code.trim());
     $q.notify({
       color: "red-5",
       textColor: "white",
