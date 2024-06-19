@@ -32,9 +32,6 @@ Result.init({
   status_id: {
     type: DataTypes.CHAR(32),
     allowNull: false,
-  },
-  startedAt: {
-    type: DataTypes.DATE
   }
 },
 {
