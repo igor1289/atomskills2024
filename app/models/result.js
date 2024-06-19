@@ -33,6 +33,9 @@ Result.init({
     type: DataTypes.CHAR(32),
     allowNull: false,
   },
+  startedAt: {
+    type: DataTypes.DATE
+  }
 },
 {
   sequelize
