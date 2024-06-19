@@ -1,16 +1,112 @@
 <template>
-  <q-page class="flex flex-center">
-    <h1>Page1</h1>
-    <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam qui,
-      porro optio pariatur rerum doloribus alias dicta est accusantium adipisci
-      id repellat quidem iste fugit vero voluptatem ipsam quis doloremque.
-    </p>
-  </q-page>
+  <div class="q-pa-md">
+    <q-table
+      bordered
+      title="Дневник"
+      :rows="rows"
+      :columns="columns"
+      row-key="name"
+      :filter="filter"
+    >
+      <template v-slot:top-right>
+        <q-input
+          borderless
+          dense
+          debounce="300"
+          v-model="filter"
+          placeholder="Поиск"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+    </q-table>
+  </div>
 </template>
 
 <script setup>
-defineOptions({
-  name: "IndexPage",
-});
+import { useQuasar } from "quasar";
+import { onMounted, ref } from "vue";
+const $q = useQuasar();
+const filter = ref("");
+const rows = ref([]);
+// onMounted();
+// {
+//   listTask();
+// }
+
+// async function listTask() {
+//   try {
+//     const result = await fetch("/task/all", {
+//       method: "GET",
+//       headers: {
+//         Accept: "application/json",
+//         "Content-Type": "application/json",
+//       },
+//     });
+//     const data = await result.json();
+//     // console.log(data);
+//     // console.log(data.length);
+//     if (data.length != 0) {
+//       let code = data[0].code;
+//       // console.log(code);
+//       rows.value.push(data[0]);
+//       // console.log(rows);
+//       for (const key in data) {
+//         if (Object.hasOwnProperty.call(data, key)) {
+//           const element = data[key];
+//           if (code != element.code) {
+//             rows.value.push(element);
+//             // console.log(rows);
+//             code = element.code;
+//           }
+//         }
+//       }
+//     }
+//     // rows.value = console.log(rows.value);
+//   } catch (error) {
+//     $q.notify({
+//       color: "red-5",
+//       textColor: "white",
+//       icon: "warning",
+//       message: "Не удалось подключиться к серверу",
+//     });
+//   }
+// }
+
+const columns = [
+  {
+    name: "task",
+    required: true,
+    label: "Задание",
+    align: "left",
+    field: (row) => row.title,
+    sortable: true,
+  },
+  {
+    name: "teacher",
+    required: true,
+    label: "Проверяющий",
+    align: "left",
+    field: (row) => row.title,
+    sortable: true,
+  },
+  {
+    name: "status",
+    required: true,
+    label: "Статус",
+    align: "left",
+    field: (row) => row.title,
+    sortable: true,
+  },
+  { name: "score", label: "Оценка", field: "sodium", sortable: true },
+  { name: "time", label: "Время выполнения", field: "sodium", sortable: true },
+  {
+    name: "comment",
+    align: "center",
+    label: "Комментарий",
+    sortable: false,
+  },
+];
 </script>
