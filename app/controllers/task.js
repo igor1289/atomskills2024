@@ -12,7 +12,7 @@ const authenticationMiddleware = require("../middleware/authentication.js")
 
 async function getAll(req, res)
 {
-    res.json(await taskService.getAll());
+    res.json(await taskService.getAllTasks());
 }
 
 async function getLessonTaskList(req, res)
@@ -26,7 +26,7 @@ async function getTask(req, res)
     if(req.params.topic_code && req.params.lesson_code && req.params.task_code)
     {
         const task = await taskService.getTask(req.params.topic_code, req.params.lesson_code, req.params.task_code);
-        
+
         if(task)
         {
             res.json(task);

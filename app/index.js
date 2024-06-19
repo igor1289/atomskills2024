@@ -28,6 +28,7 @@ app.use("/file", require("./controllers/file.js"));
 app.use("/task", require("./controllers/task.js"));
 app.use("/lesson", require("./controllers/lesson.js"));
 app.use("/topic", require("./controllers/topic.js"));
+app.use("/result", require("./controllers/result.js"));
 
 //Запуск
 app.listen(PORT, HOST, () => {

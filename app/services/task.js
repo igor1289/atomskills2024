@@ -1,7 +1,5 @@
-const { Where } = require("sequelize/lib/utils");
 
 const Task = require("../models/task");
-const { where } = require("sequelize");
 
 async function getAllTasks() {
   return await Task.findAll({ order: [["code", "ASC"]] });
@@ -44,4 +42,6 @@ async function getTask(topic_code, lesson_code, task_code)
 
 module.exports = {
   getAllTasks,
+  getLessonTaskList,
+  getTask
 };

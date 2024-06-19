@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../common/sequelize");
 
-class Resalt extends Model {}
+class Result extends Model {}
 
-Resalt.init({
+Result.init({
   id: {
     type: DataTypes.CHAR(32),
     primaryKey: true,
@@ -38,4 +38,4 @@ Resalt.init({
   sequelize
 });
 
-module.exports = Resalt;
+module.exports = Result;
