@@ -31,49 +31,40 @@ import { onMounted, ref } from "vue";
 const $q = useQuasar();
 const filter = ref("");
 const rows = ref([]);
-// onMounted();
-// {
-//   listTask();
-// }
 
-// async function listTask() {
-//   try {
-//     const result = await fetch("/task/all", {
-//       method: "GET",
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json",
-//       },
-//     });
-//     const data = await result.json();
-//     // console.log(data);
-//     // console.log(data.length);
-//     if (data.length != 0) {
-//       let code = data[0].code;
-//       // console.log(code);
-//       rows.value.push(data[0]);
-//       // console.log(rows);
-//       for (const key in data) {
-//         if (Object.hasOwnProperty.call(data, key)) {
-//           const element = data[key];
-//           if (code != element.code) {
-//             rows.value.push(element);
-//             // console.log(rows);
-//             code = element.code;
-//           }
-//         }
-//       }
-//     }
-//     // rows.value = console.log(rows.value);
-//   } catch (error) {
-//     $q.notify({
-//       color: "red-5",
-//       textColor: "white",
-//       icon: "warning",
-//       message: "Не удалось подключиться к серверу",
-//     });
-//   }
-// }
+async function getTaskList()
+{
+  try {
+    const result = await fetch("/result/all", 
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }
+      }
+    );
+
+    const data = await result.json();
+
+    console.log(data);
+
+    rows.value = data;
+
+  } catch (error) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "Не удалось подключиться к серверу",
+    });
+  }
+}
+
+onMounted()
+{
+  getTaskList();
+}
 
 const columns = [
   {
@@ -89,7 +80,7 @@ const columns = [
     required: true,
     label: "Исполнитель",
     align: "left",
-    field: (row) => row.title,
+    field: (row) => row.student,
     sortable: true,
   },
   {
@@ -97,7 +88,7 @@ const columns = [
     required: true,
     label: "Проверяющий",
     align: "left",
-    field: (row) => row.title,
+    field: (row) => row.teacher,
     sortable: true,
   },
   {
@@ -105,11 +96,11 @@ const columns = [
     required: true,
     label: "Статус",
     align: "left",
-    field: (row) => row.title,
+    field: (row) => row.status,
     sortable: true,
   },
-  { name: "score", label: "Оценка", field: "sodium", sortable: true },
-  { name: "time", label: "Время выполнения", field: "sodium", sortable: true },
+  { name: "score", label: "Оценка", field: (row) => row.score, sortable: true },
+  { name: "time", label: "Время выполнения", field: (row) => row.time, sortable: true },
   {
     name: "comment",
     align: "center",

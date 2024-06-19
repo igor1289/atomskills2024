@@ -29,6 +29,11 @@ class User extends Model {
       name: this.name,
     };
   }
+
+  getFullName()
+  {
+    return `${this.firstName} ${this.lastName} ${this.fatherName}`;
+  }
 }
 
 User.init(

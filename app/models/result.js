@@ -38,4 +38,6 @@ Result.init({
   sequelize
 });
 
+
+
 module.exports = Result;
