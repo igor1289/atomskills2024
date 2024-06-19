@@ -58,6 +58,14 @@
             <q-item-section> Учебные материалы </q-item-section>
           </q-item>
 
+          <q-item clickable v-ripple to="/сurrentMaterial">
+            <q-item-section avatar>
+              <q-icon name="clear_all" />
+            </q-item-section>
+
+            <q-item-section> Материал </q-item-section>
+          </q-item>
+
           <q-item clickable v-ripple to="/tasks">
             <q-item-section avatar>
               <q-icon name="task" />
