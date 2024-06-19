@@ -14,28 +14,27 @@
         <q-btn color="primary" label="Проверить/Уточнить" />
       </div>
     </div>
-    <div class="text-h4 q-mb-md text-center">Задание 1</div>
+    <div class="text-h4 q-mb-md text-center">{{ dataTask.title }}</div>
 
     <div class="q-pa-md row justify-between">
       <div class="col-3">
         <div class="text-h6 text-center">Таймер</div>
         <div class="row justify-between">
           <div class="text-h6 text-italic text-left">
-            Всего времени на задание : 15 минут
+            Всего времени на задание : {{ dataTask.time }} минут
           </div>
-          <div class="text-h6 text-italic text-left q-pb-md">Сложность : 2</div>
+          <div class="text-h6 text-italic text-left q-pb-md">
+            Сложность : {{ dataTask.difficulty }}
+          </div>
         </div>
       </div>
       <div class="col-7">
         <div class="row justify-evenly">
-          <div class="text-h6 text-center">Оценка : Отлично</div>
-          <div class="text-h6 text-center">Статус : В работе</div>
+          <div class="text-h6 text-center">Оценка : {{ data[0].score }}</div>
+          <div class="text-h6 text-center">Статус : {{ data[0].status }}</div>
         </div>
         <div class="text-h6 text-italic text-justify">
-          Комментарий : Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit. Magnam obcaecati ratione quo eum laborum harum, possimus
-          laudantium facere sit laboriosam quidem consectetur rem nostrum natus
-          adipisci? Quam perferendis beatae ducimus?
+          Комментарий : {{ data[0].comment }}
         </div>
       </div>
     </div>
@@ -45,27 +44,7 @@
         <div class="text-h6 q-ma-lg text-center">Описание задания</div>
 
         <div class="q-px-md text-justify">
-          ОПИСАНИЕ Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          Quis praesentium cumque magnam odio iure quidem, quod illum numquam
-          possimus obcaecati commodi minima assumenda consectetur culpa fuga
-          nulla ullam. In, libero.
-        </div>
-        <div class="q-pa-md">
-          <q-table
-            class="my-sticky-header-column-table"
-            bordered
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-          >
-            <template v-slot:body-cell-image="props">
-              <q-td :props="props">
-                <div>
-                  <img :src="props.row.image" />
-                </div>
-              </q-td>
-            </template>
-          </q-table>
+          <div class="q-m-md" v-html="content"></div>
         </div>
       </template>
 
@@ -77,23 +56,7 @@
           possimus obcaecati commodi minima assumenda consectetur culpa fuga
           nulla ullam. In, libero.
         </div>
-        <div class="q-pa-md">
-          <q-table
-            class="my-sticky-header-column-table"
-            bordered
-            :rows="rowsMat"
-            :columns="columnsMat"
-            row-key="name"
-          >
-            <template v-slot:body-cell-image="props">
-              <q-td :props="props">
-                <div>
-                  <img :src="props.row.image" />
-                </div>
-              </q-td>
-            </template>
-          </q-table></div
-      ></template>
+      </template>
     </q-splitter>
 
     <div class="q-pa-md">
@@ -119,8 +82,10 @@
   </q-tab-panel>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import { onMounted, ref } from "vue";
+import markdownit from "markdown-it";
+import linkReplace from "markdown-it-replace-link";
 const columns = [
   {
     name: "title",
@@ -179,35 +144,83 @@ const rows = [];
 const rowsMat = [];
 const rowsRez = [];
 
-export default {
-  setup() {
-    const loading = ref([false, false, false, false, false, false]);
+const loading = ref([false, false, false, false, false, false]);
 
-    const progress = ref(false);
+const progress = ref(false);
+const code = ref("");
+const data = ref([]);
+const dataTask = ref([]);
+const content = ref("");
 
-    function simulateProgress(number) {
-      // we set loading state
-      loading.value[number] = true;
+onMounted();
+{
+  listLesson();
+}
 
-      // simulate a delay
-      setTimeout(() => {
-        // we're done, we reset loading state
-        loading.value[number] = false;
-      }, 3000);
+async function listLesson() {
+  const code = localStorage.getItem("current_lesson_result");
+  const task_code = localStorage.getItem("current_lesson");
+  try {
+    // console.log("/result/one/" + code);
+    const result = await fetch("/result/one/" + code, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    data.value = await result.json();
+    if (data.value.length != 0) {
+      const resultTask = await fetch("/task/pk/" + data.value[0].task, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      dataTask.value = await resultTask.json();
+      const md = markdownit();
+      md.use(linkReplace, {
+        processHTML: true,
+        replaceLink: (link, env, token, htmlToken) => {
+          return "/file/get/task/" + task_code.trim() + "/" + link;
+          console.log(link);
+          //localhost:9000/file/get/lesson/lsn0001/img_lsn0001_1_1.jpg
+        },
+      });
+
+      content.value = md.render(
+        dataTask.value.content.replaceAll("<br>", "\n")
+      );
+      console.log(dataTask.value);
+    } else {
+      $q.notify({
+        color: "red-5",
+        textColor: "white",
+        icon: "warning",
+        message: "Не удалось подключиться к серверу",
+      });
     }
+  } catch (error) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "Не удалось подключиться к серверу",
+    });
+  }
+}
 
-    return {
-      loading,
-      rows,
-      columns,
-      rowsMat,
-      columnsMat,
-      rowsRez,
-      columnsRez,
-      progress,
-      simulateProgress,
-      splitterModel: ref(50),
-    };
-  },
-};
+function simulateProgress(number) {
+  // we set loading state
+  loading.value[number] = true;
+
+  // simulate a delay
+  setTimeout(() => {
+    // we're done, we reset loading state
+    loading.value[number] = false;
+  }, 3000);
+}
+
+const splitterModel = ref(50);
 </script>
