@@ -1,11 +1,32 @@
 const {Router} = require("express");
 const Result = require("../models/result");
+const Task = require("../models/task");
+const User = require("../models/user");
 
 
 async function getAll(req, res)
 {
-    Result.sync();
-    res.json(await Result.findAll());
+    const results = await Result.findAll();
+
+    const resultsTable = [];
+
+    for (const result of results) {
+        const task = await Task.findOne({where: {code: result.task_code} });
+        const student = await User.findByPk(result.student_id);
+        const teacher = await User.findByPk(result.teacher_id);
+
+        resultsTable.push({
+            task: task.title,
+            student: student.getFullName(),
+            teacher: teacher.getFullName(),
+            status: "-",
+            score: "-",
+            time: task.time,
+            comment: result.comment,
+        })
+    };
+
+    res.json(resultsTable);
 }
 
 //Роутер
