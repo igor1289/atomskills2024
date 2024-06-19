@@ -17,8 +17,7 @@
     <div class="text-h6 text-italic text-right q-pb-md">
       Сложность : {{ data.difficulty }}
     </div>
-    <div class="q-mb-md text-justify">
-      {{ data.content }}
+    <div class="q-m-md" v-html="content">
     </div>
     <!-- <div>
       <q-table
@@ -43,6 +42,9 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import markdownit from "markdown-it";
+import linkReplace from 'markdown-it-replace-link'
+
 const columns = [
   {
     name: "title",
@@ -66,6 +68,8 @@ const filterRef = ref(null);
 const loading = ref([false, false, false, false, false, false]);
 const code = ref("");
 const data = ref([]);
+
+const content = ref("");
 
 const progress = ref(false);
 onMounted();
@@ -97,7 +101,18 @@ async function listLesson() {
       },
     });
     data.value = await result.json();
-    console.log(data);
+    const md = markdownit();
+    md.use(linkReplace, {
+      processHTML: true,
+      replaceLink: (link, env, token, htmlToken) => {
+        return '/file/get/task/' + code + "/" + link;
+        console.log(link);
+        //localhost:9000/file/get/lesson/lsn0001/img_lsn0001_1_1.jpg
+      }
+    });
+
+    content.value = md.render(data.value.content.replaceAll("<br>", '\n'));
+
   } catch (error) {
     $q.notify({
       color: "red-5",
