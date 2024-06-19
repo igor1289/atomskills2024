@@ -7,6 +7,7 @@
       :columns="columns"
       row-key="name"
       :filter="filter"
+      @row-click="findTask"
     >
       <template v-slot:top-right>
         <q-input
@@ -32,25 +33,21 @@ const $q = useQuasar();
 const filter = ref("");
 const rows = ref([]);
 
-async function getTaskList()
-{
+async function getTaskList() {
   try {
-    const result = await fetch("/result/all", 
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        }
-      }
-    );
+    const result = await fetch("/result/all", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
 
     const data = await result.json();
 
     console.log(data);
 
     rows.value = data;
-
   } catch (error) {
     $q.notify({
       color: "red-5",
@@ -61,7 +58,32 @@ async function getTaskList()
   }
 }
 
-onMounted()
+async function findTask(e, row) {
+  localStorage.setItem("current_lesson_result", row.id);
+  window.location.href = "/#/completing";
+  // try {
+  //   const result = await fetch("/result/one/" + row.id, {
+  //     method: "GET",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   const data = await result.json();
+  //   console.log(data);
+  //   localStorage.setItem("current_lesson_result", data.id);
+  //   window.location.href = "/#/completing";
+  // } catch (error) {
+  //   $q.notify({
+  //     color: "red-5",
+  //     textColor: "white",
+  //     icon: "warning",
+  //     message: "Не удалось подключиться к серверу",
+  //   });
+  // }
+}
+
+onMounted();
 {
   getTaskList();
 }
@@ -100,7 +122,12 @@ const columns = [
     sortable: true,
   },
   { name: "score", label: "Оценка", field: (row) => row.score, sortable: true },
-  { name: "time", label: "Время выполнения", field: (row) => row.time, sortable: true },
+  {
+    name: "time",
+    label: "Время выполнения",
+    field: (row) => row.time,
+    sortable: true,
+  },
   {
     name: "comment",
     align: "center",
