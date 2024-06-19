@@ -32,16 +32,6 @@
             <q-item-section> Дневник </q-item-section>
           </q-item>
 
-          <!-- ВРЕМЕННО  -->
-          <q-item clickable v-ripple to="/completing">
-            <q-item-section avatar>
-              <q-icon name="check" />
-            </q-item-section>
-
-            <q-item-section> Выполнение Задания </q-item-section>
-          </q-item>
-          <!-- ВРЕМЕННО  -->
-
           <q-item clickable v-ripple to="/completedTasks">
             <q-item-section avatar>
               <q-icon name="check" />
@@ -56,14 +46,6 @@
             </q-item-section>
 
             <q-item-section> Учебные материалы </q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple to="/сurrentMaterial">
-            <q-item-section avatar>
-              <q-icon name="clear_all" />
-            </q-item-section>
-
-            <q-item-section> Материал </q-item-section>
           </q-item>
 
           <q-item clickable v-ripple to="/tasks">
@@ -81,6 +63,20 @@
 
             <q-item-section> Рейтинг </q-item-section>
           </q-item>
+
+          <!-- ВРЕМЕННО  -->
+          <q-item clickable v-ripple to="/сurrentMaterial">
+            <q-item-section> Материал </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple to="/completing">
+            <q-item-section> Выполнение Задания </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple to="/currentTask">
+            <q-item-section> Задание </q-item-section>
+          </q-item>
+          <!-- ВРЕМЕННО  -->
         </q-list>
       </q-scroll-area>
     </q-drawer>

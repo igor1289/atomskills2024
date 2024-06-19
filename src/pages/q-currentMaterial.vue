@@ -1,7 +1,7 @@
 <template>
-  <q-tab-panel name="Учебный матреиал 1">
-    <div class="text-h4 q-mb-md text-center">Учебный матреиал 1</div>
-    <div class="text-h6 q-mb-md text-right">Автор</div>
+  <q-tab-panel name="Учебный материал 1">
+    <div class="text-h4 q-ma-lg text-center">Учебный материал 1</div>
+    <div class="text-h6 text-italic text-right q-pb-md">Автор</div>
     <p class="text-justify">
       ОПИСАНИЕ Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis
       praesentium cumque magnam odio iure quidem, quod illum numquam possimus
