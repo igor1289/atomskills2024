@@ -77,16 +77,22 @@ onMounted();
   listLesson();
 }
 
-function simulateProgress(number) {
-  // we set loading state
-  loading.value[number] = true;
+function startTask()
+{
+  const code = localStorage.getItem("current_lesson");
 
-  // simulate a delay
-  setTimeout(() => {
-    // we're done, we reset loading state
-    loading.value[number] = false;
-  }, 3000);
+  
 }
+// function simulateProgress(number) {
+//   // we set loading state
+//   loading.value[number] = true;
+
+//   // simulate a delay
+//   setTimeout(() => {
+//     // we're done, we reset loading state
+//     loading.value[number] = false;
+//   }, 3000);
+// }
 // const simple = ref([]);
 
 async function listLesson() {
