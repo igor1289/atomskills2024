@@ -81,30 +81,6 @@ async function getOne(req, res) {
   res.json(resultsTable);
 }
 
-async function getOne(req, res) {
-  const results = await Result.findByPk(req.params.id);
-
-  const resultsTable = [];
-
-  //for (const result of results) {
-  if (results) {
-    const task = await Task.findOne({ where: { code: results.task_code } });
-    const student = await User.findByPk(results.student_id);
-    const teacher = await User.findByPk(results.teacher_id);
-
-    resultsTable.push({
-      task: task.code,
-      student: student.getFullName(),
-      teacher: teacher.getFullName(),
-      status: "-",
-      score: "-",
-      time: task.time,
-      comment: results.comment,
-    });
-  }
-
-  res.json(resultsTable);
-}
 //Роутер
 const router = Router();
 
