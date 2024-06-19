@@ -100,10 +100,19 @@
           <q-avatar size="146px" class="q-mb-md">
             <img src="/public/icons/man.png" />
           </q-avatar>
-          <div class="text-weight-bold">NAME</div>
-          <div>Ученик</div>
+          <div>
+            <div class="text-h8 text-left">Фамилия</div>
+            <div class="text-h8 text-left">Имя</div>
+            <div class="text-h8 text-left">Отчество</div>
+          </div>
         </div>
       </q-img>
+      <div class="absolute-center">
+        <div class="text-h5 text-center text-primary">Диплом</div>
+        <div class="q-pb-md">
+          <q-btn icon="download" color="primary" label="Загрузить" />
+        </div>
+      </div>
     </q-drawer>
 
     <q-page-container>
