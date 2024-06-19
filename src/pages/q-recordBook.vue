@@ -31,11 +31,53 @@ import { onMounted, ref } from "vue";
 const $q = useQuasar();
 const filter = ref("");
 const rows = ref([]);
-// onMounted();
-// {
-//   listTask();
-// }
 
+onMounted();
+{
+  getTaskList();
+}
+
+async function getTaskList()
+{
+  const user_id = localStorage.getItem("user_id");
+
+  console.log(user_id);
+
+  if(!user_id)
+  {    
+      $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "Для просмотра дневника необходимо войти под своей учётной записью",
+    });
+  }
+  
+  try {
+    const result = await fetch("/result/student/" + user_id, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    
+    const data = await result.json();
+    
+    console.log(data);
+
+    rows.value = data;
+
+  } catch (error) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "Не удалось подключиться к серверу",
+    });
+  }
+}
 // async function listTask() {
 //   try {
 //     const result = await fetch("/task/all", {
@@ -81,7 +123,7 @@ const columns = [
     required: true,
     label: "Задание",
     align: "left",
-    field: (row) => row.title,
+    field: (row) => row.task,
     sortable: true,
   },
   {
@@ -89,7 +131,7 @@ const columns = [
     required: true,
     label: "Проверяющий",
     align: "left",
-    field: (row) => row.title,
+    field: (row) => row.teacher,
     sortable: true,
   },
   {
@@ -97,11 +139,11 @@ const columns = [
     required: true,
     label: "Статус",
     align: "left",
-    field: (row) => row.title,
+    field: (row) => row.status,
     sortable: true,
   },
-  { name: "score", label: "Оценка", field: "sodium", sortable: true },
-  { name: "time", label: "Время выполнения", field: "sodium", sortable: true },
+  { name: "score", label: "Оценка", field: (row) => row.status, sortable: true },
+  { name: "time", label: "Время выполнения", field: (row) => row.time, sortable: true },
   {
     name: "comment",
     align: "center",

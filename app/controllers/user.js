@@ -49,7 +49,11 @@ async function login(req, res)
         {
             if(await user.verifyPassword(req.body.password))
             {
-                res.json({access_token: authenticationService.signUserAccessToken(user)});
+                res.json({
+                    access_token: authenticationService.signUserAccessToken(user), 
+                    user_id: user.id,
+                    user_name: user.getFullName()
+                });
             }else{
                 res.status(400);
                 res.json(new Error("Неверный пароль", ""));
