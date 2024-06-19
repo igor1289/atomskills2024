@@ -246,7 +246,7 @@
           src="/public/icons/logo-o.png"
           style="width: 150px; height: 150px"
         />
-        <div class="text-h3 text-white text-center">НАШЕ НАЗВАНИЕ ПРОДУКТА</div>
+        <div class="text-h3 text-white text-center">SPARK.EDU</div>
         <div class="text-h6 text-grey-3 text-center">WeldingAndSons</div>
       </div>
     </q-parallax>
