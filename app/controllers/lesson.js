@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const Error = require("../common/error.js");
 const { validationResult } = require("express-validator");
+<<<<<<< HEAD
 
 //Сервисы
 const lessonService = require("../services/lesson.js");
@@ -17,6 +18,17 @@ async function getAll(req, res) {
 async function getLessons(req, res) {
   if (req.params.topic_code) {
     const lesson = await lessonService.getLessons(req.params.topic_code.trim());
+=======
+const Lesson = require("../models/lesson.js");
+
+async function get(req, res) {
+  if (req.params.code) {
+    const lesson = await Lesson.findOne({
+      where: {
+        code: req.params.code,
+      },
+    });
+>>>>>>> 3df46c3 (1)
 
     if (lesson) {
       res.json(lesson);
@@ -30,7 +42,11 @@ async function getLessons(req, res) {
 //Роутер
 const router = Router();
 
+<<<<<<< HEAD
 router.get("/all", getAll);
 router.get("/topic/:topic_code", getLessons);
+=======
+router.get("/get/:code", get);
+>>>>>>> 3df46c3 (1)
 
 module.exports = router;
